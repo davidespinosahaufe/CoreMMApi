@@ -1,0 +1,113 @@
+FORMAT: 1A
+
+# Core MM API
+
+Core MM is an API allowing consumers to access MM features.
+
+## Employees Collection [/employees]
+
+### List All Employees [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 1075,
+                "type": "PersonType_Person",
+                "salutation": "Salutation_F",
+                "title": null,
+                "name": "Jana",
+                "middlename": null,
+                "surname": "Becker",
+                "displayName": "Jana Becker",
+                "titleAfterName": null,
+                "photoName": "JanaBecker.jpg",
+                "birthDate": null,
+                "signature": null,
+                "login": "jana.becker",
+                "languageId": "77010",
+                "language": "de-CH",
+                "nationality": null,
+                "civilStatus": null,
+                "privateContactInfo": null,
+                "businessContactInfo": {
+                  "email": "jana.becker@fanergy.net",
+                  "phoneDirect": "+49 288 58 88 117",
+                  "phoneMain": null,
+                  "phoneMobile": null,
+                  "fax": null,
+                  "country": "22084",
+                  "zip": "10117",
+                  "city": "Berlin",
+                  "street": "Unter den Linden 2"
+                }
+            }
+        ]
+        
+## Positions Collection [/positions]
+
+### List All Positions [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": 86,
+                "generalInformation": {
+                  "jobNo": null,
+                  "jobTitle": "Feedback Endjahresgespräch",
+                  "created": {
+                    "person": null,
+                    "date": 1238671476000
+                  },
+                  "modified": {
+                    "person": null,
+                    "date": 1334774919000
+                  },
+                  "status": null,
+                  "isArchived": true,
+                  "archivedOn": null
+                },
+                "jobDescription": {
+                  "entryLevel": [],
+                  "expectedStartDate": null,
+                  "department": null,
+                  "employment": null,
+                  "salary": null,
+                  "salaryComment": null,
+                  "jobLocation": null,
+                  "jobLocationComment": null,
+                  "additionalInformation": null
+                },
+                "jobRequirements": null,
+                "type": "SurveyType_WorkSkills",
+                "branchId": null,
+                "placeOfWork": null,
+                "numberOfVisitors": null,
+                "active": false,
+                "currentStatus": null,
+                "lineManagerId": null
+             }
+        ]
+        
+## Roles Collection [/roles]
+
+### List All Roles [GET]
+
++ Response 200 (application/json)
+
+        [
+          {
+            "id": 18,
+            "created": 1217409000000,
+            "createdBy": 1,
+            "modified": null,
+            "type": null,
+            "employeeId": 305,
+            "applicantDisplayName": null,
+            "applicantPhotoName": null,
+            "positionId": 28,
+            "isArchived": true,
+            "archivedOn": null
+          }
+        ]
