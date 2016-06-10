@@ -113,7 +113,7 @@ Core MM is an API allowing consumers to access MM features.
         ]
         
         
-## Goals [/goals]
+## Goals Collection [/goals]
 
 ### Create a new goal [POST]
 
@@ -150,7 +150,11 @@ Response then return specific header and body
                 "description": "Operations must be faster."
             }
             
-### Goals modification [/goals/{goal_id}]
+### Goal [/goals/{goal_id}]
+
++ Parameters
+    + goal_id (number) - ID of the goal in the form of an integer
+
 ### Modify a goal [PUT]
 
 A  goal will be modified using this action.
@@ -176,3 +180,46 @@ Response then return specific header and body
     + Headers
     
     + Body
+    
+### Delete a goal [DELETE]
+
+This DELETE request will delete the goal with the existing request parameter id.
+
++ Response 204
+
+## Evaluation Collection [/evaluations]
+
+### Create a new evaluation [POST]
+
+A new evaluation will be created using this action.
+This action takes a JSON payload as a part of the request.
+Response then return specific header and body
+
++ period (integer) - Id of the period
++ type (integer) - Type of goal
++ title (string) - Title of the goal
++ description (string) - Description of the goal
+
++ Request (application/json)
+
+        {
+            "periodid": 1,
+            "type": 2,
+            "title": "Performance goal",
+            "description": "Operations must be faster."
+        }
+
++ Response 201 (application/json)
+
+    + Headers
+            
+            Location: /goals/2
+    
+    + Body
+    
+            {
+                "periodid": 1,
+                "type": 2,
+                "title": "Performance goal",
+                "description": "Operations must be faster."
+            }
