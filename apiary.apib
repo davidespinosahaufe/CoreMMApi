@@ -122,35 +122,42 @@ This action takes a JSON payload as a part of the request.
 Response then return specific header and body
 
 + period (integer) - Id of the period
-+ type (integer) - Type of goal
++ type (integer) - Id of type of goal
 + title (string) - Title of the goal
 + description (string) - Description of the goal
++ creator (integer) - Position id of the Goal creator
++ recipient (integer) - Position id of he Goal recipient
 
 + Request (application/json)
 
         {
-            "periodid": 1,
-            "type": 2,
-            "title": "Performance goal",
-            "description": "Operations must be faster."
+                "period": 1,
+                "type": 2,
+                "title": "Performance goal",
+                "description": "Operations must be faster.",
+                "creator": 76,
+                "recipient": 83
         }
 
 + Response 201 (application/json)
 
     + Headers
             
-            Location: /goals/2
+            Location: /goals/5
     
     + Body
     
             {
-                "periodid": 1,
+                "id": 76,
+                "period": 1,
                 "type": 2,
                 "title": "Performance goal",
-                "description": "Operations must be faster."
+                "description": "Operations must be faster.",
+                "creator": 76,
+                "recipient": 83
             }
             
-### Goal [/goals/{goal_id}]
+## Goal [/goals/{goal_id}]
 
 + Parameters
     + goal_id (number) - ID of the goal in the form of an integer
@@ -162,64 +169,86 @@ This action takes a JSON payload as a part of the request.
 Response then return specific header and body
 
 + period (integer) - Id of the period
-+ type (integer) - Type of goal
++ type (integer) - Id of type of goal
 + title (string) - Title of the goal
 + description (string) - Description of the goal
++ creator (integer) - Position id of the Goal creator
++ recipient (integer) - Position id of he Goal recipient
 
 + Request (application/json)
 
         {
-            "periodid": 1,
+            "period": 1,
             "type": 2,
             "title": "Performance goal",
-            "description": "Operations must be faster."
+            "description": "Operations must be faster.",
+            "creator": 76,
+            "recipient": 83
         }
 
-+ Response 204 (application/json)
++ Response 200 (application/json)
 
     + Headers
     
     + Body
     
+            {
+                "period": 1,
+                "type": 2,
+                "title": "Performance goal",
+                "description": "Operations must be faster.",
+                "creator": 76,
+                "recipient": 83,
+                "links": [
+                    {
+                        "rel": "evaluations",
+                        "href": "/goals/5/evaluations"
+                    },
+                    {
+                        "rel": "creator",
+                        "href": "/positions/76"
+                    },
+                    {
+                        "rel": "recipient",
+                        "href": "/positions/83"
+                    },
+                ]
+            }
+    
+
+### Get a goal [GET]
+    
++ Response 200 (application/json)
+
+    + Headers
+    
+    + Body
+    
+            {
+                "period": 1,
+                "type": 2,
+                "title": "Performance goal",
+                "description": "Operations must be faster.",
+                "creator": 76,
+                "recipient": 83,
+                "links": [
+                    {
+                        "rel": "evaluations",
+                        "href": "/goals/5/evaluations"
+                    },
+                    {
+                        "rel": "creator",
+                        "href": "/positions/76"
+                    },
+                    {
+                        "rel": "recipient",
+                        "href": "/positions/83"
+                    },
+                ]
+            }
+
 ### Delete a goal [DELETE]
 
 This DELETE request will delete the goal with the existing request parameter id.
 
 + Response 204
-
-## Evaluation Collection [/evaluations]
-
-### Create a new evaluation [POST]
-
-A new evaluation will be created using this action.
-This action takes a JSON payload as a part of the request.
-Response then return specific header and body
-
-+ period (integer) - Id of the period
-+ type (integer) - Type of goal
-+ title (string) - Title of the goal
-+ description (string) - Description of the goal
-
-+ Request (application/json)
-
-        {
-            "periodid": 1,
-            "type": 2,
-            "title": "Performance goal",
-            "description": "Operations must be faster."
-        }
-
-+ Response 201 (application/json)
-
-    + Headers
-            
-            Location: /goals/2
-    
-    + Body
-    
-            {
-                "periodid": 1,
-                "type": 2,
-                "title": "Performance goal",
-                "description": "Operations must be faster."
-            }
