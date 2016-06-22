@@ -167,8 +167,8 @@ Response then return specific header and body
 ## Goal [/goals/{goal_id}]
 
 + Parameters
-    + goal_id (required, int) - ID of the goal in the form of an integer
-
+    + goal_id (required, number, `1`) ... ID of the goal in the form of an integer
+    
 ### Modify a goal [PUT]
 
 A  goal will be modified using this action.
@@ -270,7 +270,7 @@ A single Goal is returned through a GET request where the goal id is sent as an 
                 }
             }
 
-### Deleted a goal [DELETE]
+### Delete a goal [DELETE]
 
 This DELETE request will delete the goal with the existing request parameter id.
 
