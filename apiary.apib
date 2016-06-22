@@ -11,6 +11,14 @@ Core MM is an API allowing consumers to access MM features.
 
 A list of employees will be returned using this action.
 
++ Request
+
+    + Headers
+    
+                Accept-Charset: application/json
+                X-AUTH-TOKEN: DEBUGTOKEN
+                X-FORWARDED-HOST: local-133.umantis.lan
+                
 + Response 200 (application/json)
 
         [
@@ -53,6 +61,14 @@ A list of employees will be returned using this action.
 
 A list of positions will be returned using this action.
 
++ Request
+
+    + Headers
+    
+                Accept-Charset: application/json
+                X-AUTH-TOKEN: DEBUGTOKEN
+                X-FORWARDED-HOST: local-133.umantis.lan
+                
 + Response 200 (application/json)
 
         [
@@ -101,6 +117,12 @@ A list of positions will be returned using this action.
 
 A list of roles will be returned using this action.
 
+    + Headers
+    
+                Accept-Charset: application/json
+                X-AUTH-TOKEN: DEBUGTOKEN
+                X-FORWARDED-HOST: local-133.umantis.lan
+
 + Response 200 (application/json)
 
         [
@@ -137,14 +159,22 @@ Response then return specific header and body
 
 + Request (application/json)
 
-        {
-                "period": 1,
-                "type": 2,
-                "title": "Performance goal",
-                "description": "Operations must be faster.",
-                "creator": 76,
-                "recipient": 83
-        }
+    + Headers
+    
+                Accept-Charset: application/json
+                X-AUTH-TOKEN: DEBUGTOKEN
+                X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+    
+            {
+                    "period": 1,
+                    "type": 2,
+                    "title": "Performance goal",
+                    "description": "Operations must be faster.",
+                    "creator": 76,
+                    "recipient": 83
+            }
 
 + Response 201 (application/json)
 
@@ -184,28 +214,36 @@ Response then return specific header and body
 
 + Request (application/json)
 
-        {
-            "period": 1,
-            "type": 2,
-            "title": "Performance goal",
-            "description": "Operations must be faster.",
-            "creator": 76,
-            "recipient": 83,
-            "_links": {
-                    "self": {
-                        "href": "/goals/5"
-                    },
-                    "evaluations": {
-                        "href": "/goals/5/evaluations"
-                    },
-                    "creator": {
-                        "href": "/positions/76"
-                    },
-                    "recipient": {
-                        "href": "/positions/83"
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
+    + Body
+    
+            {
+                "period": 1,
+                "type": 2,
+                "title": "Performance goal",
+                "description": "Operations must be faster.",
+                "creator": 76,
+                "recipient": 83,
+                "_links": {
+                        "self": {
+                            "href": "/goals/5"
+                        },
+                        "evaluations": {
+                            "href": "/goals/5/evaluations"
+                        },
+                        "creator": {
+                            "href": "/positions/76"
+                        },
+                        "recipient": {
+                            "href": "/positions/83"
+                        }
                     }
-                }
-        }
+            }
 
 + Response 200 (application/json)
 
@@ -241,6 +279,14 @@ Response then return specific header and body
 
 A single Goal is returned through a GET request where the goal id is sent as an URL parameter.
 
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
 + Response 200 (application/json)
 
     + Headers
@@ -274,4 +320,12 @@ A single Goal is returned through a GET request where the goal id is sent as an 
 
 This DELETE request will delete the goal with the existing request parameter id.
 
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
 + Response 204
