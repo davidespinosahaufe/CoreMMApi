@@ -180,7 +180,7 @@ Response then return specific header and body
                     "recipient": 83
             }
 
-+ Response 201 (application/json)
++ Response 201 (application/hal+json)
     + Attributes (Goal)
             
 ## Goal [/goals/{goal_id}]
@@ -234,7 +234,7 @@ Response then return specific header and body
                 }
             }
 
-+ Response 200 (application/json)
++ Response 200 (application/hal+json)
 
     + Headers
     
@@ -276,7 +276,7 @@ A single Goal is returned through a GET request where the goal id is sent as an 
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
-+ Response 200 (application/json)
++ Response 200 (application/hal+json)
 
     + Headers
     
