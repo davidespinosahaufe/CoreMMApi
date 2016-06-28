@@ -1,5 +1,4 @@
 FORMAT: 1A
-HOST: http://mockserver/
 
 # Core MM API
 
@@ -182,22 +181,7 @@ Response then return specific header and body
             }
 
 + Response 201 (application/json)
-
-    + Headers
-            
-            Location: /goals/5
-    
-    + Body
-    
-            {
-                "id": 76,
-                "period": 1,
-                "type": 2,
-                "title": "Performance goal",
-                "description": "Operations must be faster.",
-                "creator": 76,
-                "recipient": 83
-            }
+    + Attributes (Goal)
             
 ## Goal [/goals/{goal_id}]
 
@@ -235,19 +219,19 @@ Response then return specific header and body
                 "creator": 76,
                 "recipient": 83,
                 "_links": {
-                        "self": {
-                            "href": "/goals/5"
-                        },
-                        "evaluations": {
-                            "href": "/goals/5/evaluations"
-                        },
-                        "creator": {
-                            "href": "/positions/76"
-                        },
-                        "recipient": {
-                            "href": "/positions/83"
-                        }
+                    "self": {
+                        "href": "/goals/5"
+                    },
+                    "evaluations": {
+                        "href": "/goals/5/evaluations"
+                    },
+                    "creator": {
+                        "href": "/positions/76"
+                    },
+                    "recipient": {
+                        "href": "/positions/83"
                     }
+                }
             }
 
 + Response 200 (application/json)
@@ -334,3 +318,13 @@ This DELETE request will delete the goal with the existing request parameter id.
             X-FORWARDED-HOST: local-133.umantis.lan
             
 + Response 204
+
+# Data Structures
+
+## Goal (object)
++ period: 1 (number, required)
++ type: 40 (number, required)
++ title: "Performance goal" (string, required)
++ description: "Operations must be faster." (string)
++ creator: 76 (number, required)
++ recipient: 83 (number, required)
