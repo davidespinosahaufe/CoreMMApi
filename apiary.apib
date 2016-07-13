@@ -156,29 +156,28 @@ Response then return specific header and body
 
 + period (integer) - Id of the period
 + type (integer) - Id of type of goal
+    + objective = 1
+    + task = 2
+    + skill = 3
+    + development = 4
+    + behavior = 5
+    + feedback = 6
 + title (string) - Title of the goal
 + description (string) - Description of the goal
-+ creator (integer) - Position id of the Goal creator
++ creator (string) - Position id of the Goal creator
 + recipient (integer) - Position id of he Goal recipient
++ category (string) - Category of the created Goal
 
 + Request (application/json)
 
     + Headers
     
-                Accept-Charset: application/json
-                X-AUTH-TOKEN: DEBUGTOKEN
-                X-FORWARDED-HOST: local-133.umantis.lan
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
     
     + Body
-    
-            {
-                    "period": 1,
-                    "type": 2,
-                    "title": "Performance goal",
-                    "description": "Operations must be faster.",
-                    "creator": 76,
-                    "recipient": 83
-            }
+    + Attributes (Goal)
 
 + Response 201 (application/hal+json)
     + Attributes (Goal)
@@ -196,10 +195,17 @@ Response then return specific header and body
 
 + period (integer) - Id of the period
 + type (integer) - Id of type of goal
+    + objective = 1
+    + task = 2
+    + skill = 3
+    + development = 4
+    + behavior = 5
+    + feedback = 6
 + title (string) - Title of the goal
 + description (string) - Description of the goal
-+ creator (integer) - Position id of the Goal creator
++ creator (string) - Position id of the Goal creator
 + recipient (integer) - Position id of he Goal recipient
++ category (string) - Category of the created Goal
 
 + Request (application/json)
 
@@ -210,58 +216,14 @@ Response then return specific header and body
             X-FORWARDED-HOST: local-133.umantis.lan
             
     + Body
-    
-            {
-                "period": 1,
-                "type": 2,
-                "title": "Performance goal",
-                "description": "Operations must be faster.",
-                "creator": 76,
-                "recipient": 83,
-                "_links": {
-                    "self": {
-                        "href": "/goals/5"
-                    },
-                    "evaluations": {
-                        "href": "/goals/5/evaluations"
-                    },
-                    "creator": {
-                        "href": "/positions/76"
-                    },
-                    "recipient": {
-                        "href": "/positions/83"
-                    }
-                }
-            }
+    + Attributes (Goal)
 
 + Response 200 (application/hal+json)
 
     + Headers
     
     + Body
-    
-            {
-                "period": 1,
-                "type": 2,
-                "title": "Performance goal",
-                "description": "Operations must be faster.",
-                "creator": 76,
-                "recipient": 83,
-                "_links": {
-                    "self": {
-                        "href": "/goals/5"
-                    },
-                    "evaluations": {
-                        "href": "/goals/5/evaluations"
-                    },
-                    "creator": {
-                        "href": "/positions/76"
-                    },
-                    "recipient": {
-                        "href": "/positions/83"
-                    }
-                }
-            }
+    + Attributes (Goal)
     
 
 ### Get a goal [GET]
@@ -281,50 +243,35 @@ A single Goal is returned through a GET request where the goal id is sent as an 
     + Headers
     
     + Body
-    
-            {
-                "period": 1,
-                "type": 2,
-                "title": "Performance goal",
-                "description": "Operations must be faster.",
-                "creator": 76,
-                "recipient": 83,
-                "_links": {
-                    "self": {
-                        "href": "/goals/5"
-                    },
-                    "evaluations": {
-                        "href": "/goals/5/evaluations"
-                    },
-                    "creator": {
-                        "href": "/positions/76"
-                    },
-                    "recipient": {
-                        "href": "/positions/83"
-                    }
-                }
-            }
+    + Attributes (Goal)
 
 ### Delete a goal [DELETE]
 
 This DELETE request will delete the goal with the existing request parameter id.
 
 + Request (application/json)
-
+            
     + Headers
     
             Accept-Charset: application/json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
-            
+    
+    + Parameters
+        + period: 1 (required, number)
+        + position: 1 (required, number)
+        + type: 1 (required, number)
+   
 + Response 204
+
 
 # Data Structures
 
 ## Goal (object)
-+ period: 1 (number, required)
-+ type: 40 (number, required)
-+ title: "Performance goal" (string, required)
-+ description: "Operations must be faster." (string)
-+ creator: 76 (number, required)
-+ recipient: 83 (number, required)
++ period: 103 (number, required)
++ type: 2 (number, required)
++ title: Title for demo (string, required)
++ description: It seems that we can create goals. (string)
++ creator: 76 (string, required)
++ recipient: 81 (number, required)
++ category: 1020001 (string)
