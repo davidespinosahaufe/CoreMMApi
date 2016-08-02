@@ -2,9 +2,9 @@ FORMAT: 1A
 
 # Core MM API
 
-Core MM is an API allowing consumers to access MM features.
+Core MM is an API allowing consumers to access employee app features.
 
-## Employees Collection [/persons]
+## Persons Collection [/persons]
 
 ### List All Persons [GET]
 
@@ -146,47 +146,25 @@ A list of roles will be returned using this action.
         ]
         
         
-## Goals Collection [/goals]
 
-### Create a new goal [POST]
 
-A new goal will be created using this action.
-This action takes a JSON payload as a part of the request.
-Response then return specific header and body
 
-+ period (integer) - Id of the period
-+ type (integer) - Id of type of goal
-    + objective = 1
-    + task = 2
-    + skill = 3
-    + development = 4
-    + behavior = 5
-    + feedback = 6
-+ title (string) - Title of the goal
-+ description (string) - Description of the goal
-+ creator (string) - Position id of the Goal creator
-+ recipient (integer) - Position id of he Goal recipient
-+ category (string) - Category of the created Goal
 
-+ Request (application/json)
 
-    + Headers
-    
-            Accept-Charset: application/json
-            X-AUTH-TOKEN: DEBUGTOKEN
-            X-FORWARDED-HOST: local-133.umantis.lan
-    
-    + Body
-    + Attributes (Goal)
-
-+ Response 201 (application/hal+json)
-    + Attributes (Goal)
-            
 ## Goal [/goals/{goal_id}]
 
 + Parameters
     + goal_id (required, number, `1`) ... ID of the goal in the form of an integer
-    
++ Attributes (object)
+    + period: 103 (number, required)
+    + type: 2 (number, required)
+    + title: Title for demo (string, required)
+    + description: It seems that we can create goals. (string)
+    + creator: 76 (string, required)
+    + recipient: 81 (number, required)
+    + category: 1020001 (string)
+
+
 ### Modify a goal [PUT]
 
 A  goal will be modified using this action.
@@ -265,13 +243,167 @@ This DELETE request will delete the goal with the existing request parameter id.
 + Response 204
 
 
+
+## Goals Collection [/goals]
+
+### Create a new goal [POST]
+
+A new goal will be created using this action.
+This action takes a JSON payload as a part of the request.
+Response then return specific header and body
+
++ period (integer) - Id of the period
++ type (integer) - Id of type of goal
+    + objective = 1
+    + task = 2
+    + skill = 3
+    + development = 4
+    + behavior = 5
+    + feedback = 6
++ title (string) - Title of the goal
++ description (string) - Description of the goal
++ creator (string) - Position id of the Goal creator
++ recipient (integer) - Position id of he Goal recipient
++ category (string) - Category of the created Goal
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+    + Attributes (Goal)
+
++ Response 201 (application/hal+json)
+    + Attributes (Goal)
+
+
+
+## Goal Type [/goals/types/{type}]
+
++ type (string) - Id of type of goal
+    + objective = 1
+    + task = 2
+    + skill = 3
+    + development = 4
+    + behavior = 5
+    + feedback = 6
+
++ Model (application/hal+json)
+
++ Parameters
+    + type: 1 (required, number) ... ID of the goal type in the form of an integer
+
++ Attributes (object)
+    + type: 1 (string, required)
+    + name: competence (string, required)
+    
+
+
+### Get Goal Type [GET] 
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body 
+    + Attributes (Goal Type)
+
+
+## Goal Types Collection [/goals/types] 
+
+List all different goal types.
+
+
+### List Goal Types [GET]
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body  
+    + Attributes (object)
+        + offset: 0 (number, required)
+        + limit: 10 (number, required)
+        + total: 100 (number, required)
+        + types (array[Goal Type])
+
+
+
+## Period [/periods/{id}]
+
++ Parameters
+    + id (required, number, `1`) ... ID of the period in the form of an integer
+
++ Model (application/hal+json)
+
++ Attributes (object)
+    + id: 12 (number, required)
+    + name: Q3-2015 (string, required)
+    + _links (array[Link])
+    
+
+### Get period [GET]
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body  
+    + Attributes (Period)
+
+
+
+## Periods Collection [/periods]
+
+Periods define timeline stages in any corporative element.
+
+### Get current period [GET /periods/current]
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body  
+    + Attributes (Period)
+    + Attributes
+        + {
+              "email": "jana.becker@fanergy.net",
+              "phoneDirect": "+49 288 58 88 117",
+              "phoneMain": null,
+              "phoneMobile": null,
+              "fax": null,
+              "country": "22084",
+              "zip": "10117",
+              "city": "Berlin",
+              "street": "Unter den Linden 2"
+        }
+                
 # Data Structures
 
-## Goal (object)
-+ period: 103 (number, required)
-+ type: 2 (number, required)
-+ title: Title for demo (string, required)
-+ description: It seems that we can create goals. (string)
-+ creator: 76 (string, required)
-+ recipient: 81 (number, required)
-+ category: 1020001 (string)
+## Link (object)
+    + self: (string, required, '/self/my' )
+    + next: (string, required, '/next/my')
