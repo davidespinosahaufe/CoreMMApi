@@ -4,154 +4,134 @@ FORMAT: 1A
 
 Core MM is an API allowing consumers to access employee app features.
 
-## Persons Collection [/persons]
 
-### List All Persons [GET]
+## Employees [/employees]
 
-A list of persons will be returned using this action.
+### Employee [/employees/{employee_id}]
 
-+ Request
++ id (integer) - Id of the employee
++ name (string) - Name of the employee
++ surname (string) - Surname of the employee
++ title (string) - Title of the employee
++ photography (string) - Photography of the employee in the form of a URL
 
-    + Headers
-    
-                Accept-Charset: application/json
-                Content-Type: application/json
-                X-AUTH-TOKEN: DEBUGTOKEN
-                X-FORWARDED-HOST: local-133.umantis.lan
-                
-+ Response 200 (application/json)
++ Model (application/hal+json)
 
-        [
-            {
-                "id": 1075,
-                "type": "PersonType_Person",
-                "salutation": "Salutation_F",
-                "title": null,
-                "name": "Jana",
-                "middlename": null,
-                "surname": "Becker",
-                "displayName": "Jana Becker",
-                "titleAfterName": null,
-                "photoName": "JanaBecker.jpg",
-                "birthDate": null,
-                "signature": null,
-                "login": "jana.becker",
-                "languageId": "77010",
-                "language": "de-CH",
-                "nationality": null,
-                "civilStatus": null,
-                "privateContactInfo": null,
-                "businessContactInfo": {
-                  "email": "jana.becker@fanergy.net",
-                  "phoneDirect": "+49 288 58 88 117",
-                  "phoneMain": null,
-                  "phoneMobile": null,
-                  "fax": null,
-                  "country": "22084",
-                  "zip": "10117",
-                  "city": "Berlin",
-                  "street": "Unter den Linden 2"
-                }
-            }
-        ]
-        
-## Positions Collection [/positions]
++ Parameters
+    + employee_id (required, number, `1`) ... ID of the employee in the form of an integer
++ Attributes (object)
+    + id: 1 (number, required)
+    + name: John (number, required)
+    + surname: Doe (string, required)
+    + title: Senior Software Engineer. (string)
+    + photography: /images/1 (string)
+    + _links
+        + self: /employees/1 (string)
+    + _embedded
+        + positions (array[Position])
 
-### List All Positions [GET]
+### GET Employee [GET]
 
-A list of positions will be returned using this action.
+A single Employee is returned through a GET request where the employee id is sent as an URL parameter.
 
-+ Request
++ Request (application/json)
 
     + Headers
     
-                Accept-Charset: application/json
-                Content-Type: application/json
-                X-AUTH-TOKEN: DEBUGTOKEN
-                X-FORWARDED-HOST: local-133.umantis.lan
-                
-+ Response 200 (application/json;charset=UTF-8)
-
-        [
-            {
-                "id": 86,
-                "generalInformation": {
-                  "jobNo": null,
-                  "jobTitle": "Feedback Endjahresgespräch",
-                  "created": {
-                    "person": null,
-                    "date": 1238671476000
-                  },
-                  "modified": {
-                    "person": null,
-                    "date": 1334774919000
-                  },
-                  "status": null,
-                  "isArchived": true,
-                  "archivedOn": null
-                },
-                "jobDescription": {
-                  "entryLevel": [],
-                  "expectedStartDate": null,
-                  "department": null,
-                  "employment": null,
-                  "salary": null,
-                  "salaryComment": null,
-                  "jobLocation": null,
-                  "jobLocationComment": null,
-                  "additionalInformation": null
-                },
-                "jobRequirements": null,
-                "type": "SurveyType_WorkSkills",
-                "branchId": null,
-                "placeOfWork": null,
-                "numberOfVisitors": null,
-                "active": false,
-                "currentStatus": null,
-                "lineManagerId": null
-             }
-        ]
-        
-## Roles Collection [/roles]
-
-### List All Roles [GET]
-
-A list of roles will be returned using this action.
-
-+ Request
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
 
     + Headers
     
-                Accept-Charset: application/json
-                Content-Type: application/json
-                X-AUTH-TOKEN: DEBUGTOKEN
-                X-FORWARDED-HOST: local-133.umantis.lan
+    + Body
+    + Attributes (Employee)
 
-+ Response 200 (application/json)
+            
+## Positions [/positions]
 
-        [
-          {
-            "id": 18,
-            "created": 1217409000000,
-            "createdBy": 1,
-            "modified": null,
-            "type": null,
-            "employeeId": 305,
-            "applicantDisplayName": null,
-            "applicantPhotoName": null,
-            "positionId": 28,
-            "isArchived": true,
-            "archivedOn": null
-          }
-        ]
-        
-        
+Every employee has at least a position.
+A position identifes an occupancy into the company.
+
+### Position [/positions/{position_id}]
+
+Gets a position given it's id.
+
++ id (integer) - Id of the position
++ name (string) - Name of the position
++ description (string) - DEscription of the position
+
++ Model (application/hal+json)
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position in the form of an integer
++ Attributes (object)
+    + id: 1 (number, required)
+    + name: Java developer (string, required)
+    + description: Developer of the main system application (string)
+    + _links
+        + self: /position/1 (string)
+        + employee: /employees/1 (string)
+
+### GET Position [GET]
+
+A single Position is returned through a GET request where the position id is sent as an URL parameter.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+
+    + Headers
+    
+    + Body
+    + Attributes (Position)
+    + Attributes
+        + _links
+            + self: /position/1 (string)
+            + employee: /employees/1 (string)
 
 
+### GET Position Direct Reports [GET /positions/{position_id}/direct_reports]
 
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+
+    + Headers
+    
+    + Body  
+    + Attributes (object)
+        + offset: 0 (number, required)
+        + limit: 10 (number, required)
+        + total: 100 (number, required)
+        + direct_reports (array[Position])
 
 
 ## Goal [/goals/{goal_id}]
+
++ period (integer) - Id of the period
++ type (integer) - Id of type of goal
++ title (string) - Title of the goal
++ description (string) - Description of the goal
++ creator (string) - Position id of the Goal creator
++ recipient (integer) - Position id of he Goal recipient
++ category (string) - Category of the created Goal
+
++ Model (application/hal+json)
 
 + Parameters
     + goal_id (required, number, `1`) ... ID of the goal in the form of an integer
@@ -170,20 +150,6 @@ A list of roles will be returned using this action.
 A  goal will be modified using this action.
 This action takes a JSON payload as a part of the request.
 Response then return specific header and body
-
-+ period (integer) - Id of the period
-+ type (integer) - Id of type of goal
-    + objective = 1
-    + task = 2
-    + skill = 3
-    + development = 4
-    + behavior = 5
-    + feedback = 6
-+ title (string) - Title of the goal
-+ description (string) - Description of the goal
-+ creator (string) - Position id of the Goal creator
-+ recipient (integer) - Position id of he Goal recipient
-+ category (string) - Category of the created Goal
 
 + Request (application/json)
 
@@ -223,7 +189,7 @@ A single Goal is returned through a GET request where the goal id is sent as an 
     + Body
     + Attributes (Goal)
 
-### Delete a goal [DELETE]
+### Delete a goal [DELETE /goals/{goal_id}?{period}&{recipient}&{type}]
 
 This DELETE request will delete the goal with the existing request parameter id.
 
@@ -237,14 +203,14 @@ This DELETE request will delete the goal with the existing request parameter id.
     
     + Parameters
         + period: 1 (required, number)
-        + position: 1 (required, number)
+        + recipient: 1 (required, number)
         + type: 1 (required, number)
    
 + Response 204
 
 
 
-## Goals Collection [/goals]
+### Goals Collection [/goals]
 
 ### Create a new goal [POST]
 
@@ -254,12 +220,6 @@ Response then return specific header and body
 
 + period (integer) - Id of the period
 + type (integer) - Id of type of goal
-    + objective = 1
-    + task = 2
-    + skill = 3
-    + development = 4
-    + behavior = 5
-    + feedback = 6
 + title (string) - Title of the goal
 + description (string) - Description of the goal
 + creator (string) - Position id of the Goal creator
@@ -282,28 +242,34 @@ Response then return specific header and body
 
 
 
-## Goal Type [/goals/types/{type}]
+## Goal Type [/goals/types/{type_id}]
 
-+ type (string) - Id of type of goal
+Every goal has a related goal type.
+
++ type_id (number) - Id of type of goal
     + objective = 1
     + task = 2
     + skill = 3
     + development = 4
     + behavior = 5
     + feedback = 6
+    + potential = 7
 
 + Model (application/hal+json)
 
 + Parameters
-    + type: 1 (required, number) ... ID of the goal type in the form of an integer
+    + type_id: 1 (required, number) ... ID of the goal type in the form of an integer
 
 + Attributes (object)
-    + type: 1 (string, required)
+    + type: 1 (number, required)
     + name: competence (string, required)
-    
-
+    + _links
+        + self: /goals/types/1/appraisals (string)
+    + _embedded (array[Goal Type Appraisals])
 
 ### Get Goal Type [GET] 
+
+Gets Goal Type with given url parameter id.
 
 + Request (application/json)
 
@@ -316,15 +282,21 @@ Response then return specific header and body
 + Response 200 (application/hal+json)
     + Body 
     + Attributes (Goal Type)
+<!--    + Attributes
+        + _embedded (array[Goal Type Appraisals]) -->
 
 
-## Goal Types Collection [/goals/types] 
-
-List all different goal types.
-
+## Goal Types Collection [/goals/types?{position}&{period}] 
 
 ### List Goal Types [GET]
 
+List a list of goal types appliable to a goal.
+If position or/and period parameters are sent, returned goal type are only appliable for that period and position.
+
++ Parameters
+    + position (optional, number, `1`) ... Id of the position applicable to the returned goal types.
+    + period (optional, number, `1`) ... Id of the period applicable to the returned goal types
+    
 + Request (application/json)
 
     + Headers
@@ -340,23 +312,35 @@ List all different goal types.
         + limit: 10 (number, required)
         + total: 100 (number, required)
         + types (array[Goal Type])
+    + Attributes
+        + _links
+            + self: /goals/types?position=1&period=1 (string)
+            + next: /goals/types?position=1&period=1?offset=1 (string)
 
 
 
-## Period [/periods/{id}]
 
-+ Parameters
-    + id (required, number, `1`) ... ID of the period in the form of an integer
+## Goal Type Appraisals [/goals/types/{type_id}/appraisals]
+
+Every goal type has a scale of appraisal values.
 
 + Model (application/hal+json)
 
-+ Attributes (object)
-    + id: 12 (number, required)
-    + name: Q3-2015 (string, required)
-    + _links (array[Link])
++ Parameters
+    + type_id (required, number, `1`) ... ID of the goal type
     
++ Attributes (object)
+    + appraisals
+        + appraisal
+            + id: 1 (number, required)
+            + value: AGood (string, required)
+            + weight: 2 (number, required)
+    + _links
+        + self: /goals/types/1/appraisals (string)
 
-### Get period [GET]
+### Get Goal Type Appraisals [GET]
+
+List all appraisals for a given goal type.
 
 + Request (application/json)
 
@@ -368,7 +352,143 @@ List all different goal types.
             
 + Response 200 (application/hal+json)
     + Body  
-    + Attributes (Period)
+    + Attributes (Goal Type Appraisals)
+        + _links
+            + self: /goals/types/1/appraisals (string)
+
+
+## Goal Type Categories
+
+
+## Goal Evaluation [/positions/{position_id}/goals/{goal_id}/evaluations]
+
++ evaluator: Position Id of the creator of the Evalution (string, required)
++ period: 103 (string, required)
++ goalType: 2 (string, required)
++ appraisal: Id of the appraisal value (string)  
++ comment: This is the comment for a goal evaluation (string)
+
++ Model (application/hal+json)
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, number, `1`) ... ID of the goal in the form of an integer
+    
++ Attributes (object)
+    + evaluator: Position Id of the evaluator of the Evalution (string, required)
+    + period: 103 (string, required)
+    + goalType: 2 (string, required)
+    + appraisal: Id of the appraisal value (string)  
+    + comment: This is the comment for a goal evaluation (string)
+
+
+### Create Goal Evaluation [POST]
+
+Creation of a Goal Evaluation using a POST request.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+    + Attributes (Goal Evaluation)
+
++ Response 201 (application/hal+json)
+    + Attributes
+        + id: 1 (number, required)
+    + Attributes (Goal Evaluation)
+    + Attributes
+        + _links
+            + self: /positions/1/goals/1/evaluations/1 (string)
+            + update: /positions/1/goals/1/evaluations/1 (string
+            + delete: /positions/1/goals/1/evaluations/1 (string)
+
+
+### Get Goal Evaluation [GET /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
+
+Gets evaluation with given url id's.
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, number, `1`) ... ID of the goal in the form of an integer
+    + evaluation_id (required, number, `1`) ... ID of the goal evaluation in the form of an integer
+    
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+
++ Response 200 (application/hal+json)
+    + Attributes
+        + id: 1 (number, required)
+    + Attributes (Goal Evaluation)
+    + Attributes
+        + _links
+            + self: /positions/1/goals/1/evaluations/1 (string)
+            + update: /positions/1/goals/1/evaluations/1 (string
+            + delete: /positions/1/goals/1/evaluations/1 (string)
+
+
+### Udate Goal Evaluation [PUT /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
+
+This PUT request will modify the existing Goal Evaluation with given url parameter ids.
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, number, `1`) ... ID of the goal in the form of an integer
+    + evaluation_id (required, number, `1`) ... ID of the goal evaluation in the form of an integer
+    
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+
++ Response 200 (application/hal+json)
+    + Attributes
+        + id: 1 (number, required)
+    + Attributes (Goal Evaluation)
+    + Attributes
+        + _links
+            + self: /positions/1/goals/1/evaluations/1 (string)
+            + update: /positions/1/goals/1/evaluations/1 (string
+            + delete: /positions/1/goals/1/evaluations/1 (string)
+
+
+### Delete a Goal Evaluation [DELETE /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
+
+This DELETE request will delete the Goal Evaluation with the existing request id parameters.
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, number, `1`) ... ID of the goal in the form of an integer
+    + evaluation_id (required, number, `1`) ... ID of the goal evaluation in the form of an integer
+
++ Request (application/json)
+            
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+   
++ Response 204
+
+
+
 
 
 
@@ -376,7 +496,20 @@ List all different goal types.
 
 Periods define timeline stages in any corporative element.
 
-### Get current period [GET /periods/current]
+### Period [/periods/{id}]
+
++ Parameters
+    + id (required, number, `1`) ... ID of the period in the form of an integer
+
++ Model (application/hal+json)
+
++ Attributes (object)
+    + id: 12 (number, required)
+    + name: Q3-2015 (string, required)
+
+### Get period [GET]
+
+Gets period identified by url id parameter.
 
 + Request (application/json)
 
@@ -390,20 +523,137 @@ Periods define timeline stages in any corporative element.
     + Body  
     + Attributes (Period)
     + Attributes
-        + {
-              "email": "jana.becker@fanergy.net",
-              "phoneDirect": "+49 288 58 88 117",
-              "phoneMain": null,
-              "phoneMobile": null,
-              "fax": null,
-              "country": "22084",
-              "zip": "10117",
-              "city": "Berlin",
-              "street": "Unter den Linden 2"
-        }
-                
+        + _links
+            + self: /periods/1 (string)
+            + next: /periods/2 (string, required)
+
+### Get current period [GET /periods/current]
+
+Gets the perdiod that is currently applied.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body  
+    + Attributes (Period)
+    + Attributes
+        + _links
+            + self: /periods/1 (string)
+            + next: /periods/2 (string, required)
+
+
+
+## Period Evaluation [/positions/{position_id}/periods/{period_id}/evaluations]
+
++ evaluator: Position Id of the creator of the Evalution (string, required)
++ appraisal: Id of the appraisal value (string)  
++ comment: This is the comment for a period evaluation (string)
+
++ Model (application/hal+json)
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + period_id (required, number, `1`) ... ID of the period in the form of an integer
+    
++ Attributes (object)
+    + evaluator: Position Id of the evaluator of the Evalution (string, required)
+    + appraisal: Id of the appraisal value (string)  
+    + comment: This is the comment for a period evaluation (string)
+
+
+### Get Period Evaluation [GET]
+
+Gets period evaluation with given url id's.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+
++ Response 200 (application/hal+json)
+    + Attributes (Period Evaluation)
+    + Attributes
+        + _links
+            + self: /positions/1/periods/1/evaluations (string)
+            + update: /positions/1/periods/1/evaluations (string)
+            + delete: /positions/1/periods/1/evaluations (string)
+
+
+### Create Period Evaluation [POST]
+
+Creation of a Period Evaluation using a POST request.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            Location: /positions/1/goals/1/evaluations/1
+    
+    + Body
+    + Attributes (Period Evaluation)
+
++ Response 201 (application/hal+json)
+    + Attributes (Period Evaluation)
+    + Attributes
+        + _links
+            + self: /positions/1/goals/1/evaluations/1 (string)
+            + update: /positions/1/goals/1/evaluations/1 (string)
+
+
+
+### Udate Period Evaluation [PUT]
+
+This PUT request will modify the existing Period Evaluation with given url parameter ids.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+
++ Response 200 (application/hal+json)
+    + Attributes (Period Evaluation)
+    + Attributes
+        + _links
+            + self: /positions/1/goals/1/evaluations/1 (string)
+            + update: /positions/1/goals/1/evaluations/1 (string)
+
+
+## Period Evaluation Status
+
+## Period Evaluation Appraisals
+
 # Data Structures
 
+## Pagination 
+    + offset: 0 (number, required)
+    + limit: 10 (number, required)
+    + total: 100 (number, required)
+
+## Appraisal
+    + id: 1 (string, required)
+    + value: A-Good (string, required)
+    + weight: 2 (number, required)
+
 ## Link (object)
-    + self: (string, required, '/self/my' )
-    + next: (string, required, '/next/my')
+    + _links
+        + self: /periods/1 (string)
+        + next: /periods/2 (string)
