@@ -49,11 +49,13 @@ A single Employee is returned through a GET request where the employee id is sen
     + Body
     + Attributes (Employee)
 
-            
+
+
 ## Positions [/positions]
 
 Every employee has at least a position.
 A position identifes an occupancy into the company.
+
 
 ### Position [/positions/{position_id}]
 
@@ -75,6 +77,8 @@ Gets a position given it's id.
         + self: /position/1 (string)
         + employee: /employees/1 (string)
 
+
+
 ### GET Position [GET]
 
 A single Position is returned through a GET request where the position id is sent as an URL parameter.
@@ -93,10 +97,7 @@ A single Position is returned through a GET request where the position id is sen
     
     + Body
     + Attributes (Position)
-    + Attributes
-        + _links
-            + self: /position/1 (string)
-            + employee: /employees/1 (string)
+
 
 
 ### GET Position Direct Reports [GET /positions/{position_id}/direct_reports]
@@ -115,11 +116,15 @@ A single Position is returned through a GET request where the position id is sen
     
     + Body  
     + Attributes (object)
-        + offset: 0 (number, required)
-        + limit: 10 (number, required)
-        + total: 100 (number, required)
         + direct_reports (array[Position])
+        + page (Page)
+        + _links
+            + self: /positions/1/direct_reports (string)
+            + next: /positions/1/direct_reports?page=2&limit=10 (string)
 
+
+
+    
 
 ## Goal [/goals/{goal_id}]
 
@@ -188,6 +193,7 @@ A single Goal is returned through a GET request where the goal id is sent as an 
     
     + Body
     + Attributes (Goal)
+
 
 ### Delete a goal [DELETE /goals/{goal_id}?{period}&{recipient}&{type}]
 
@@ -264,8 +270,11 @@ Every goal has a related goal type.
     + type: 1 (number, required)
     + name: competence (string, required)
     + _links
-        + self: /goals/types/1/appraisals (string)
-    + _embedded (array[Goal Type Appraisals])
+        + self: /goals/types/1 (string)
+    + _embedded
+        + appraisals (Goal Type Appraisals)
+        + cagegories (Goal Type Categories)
+
 
 ### Get Goal Type [GET] 
 
@@ -284,6 +293,8 @@ Gets Goal Type with given url parameter id.
     + Attributes (Goal Type)
 <!--    + Attributes
         + _embedded (array[Goal Type Appraisals]) -->
+
+
 
 
 ## Goal Types Collection [/goals/types?{position}&{period}] 
@@ -308,14 +319,12 @@ If position or/and period parameters are sent, returned goal type are only appli
 + Response 200 (application/hal+json)
     + Body  
     + Attributes (object)
-        + offset: 0 (number, required)
-        + limit: 10 (number, required)
-        + total: 100 (number, required)
         + types (array[Goal Type])
+        + page (Page)
     + Attributes
         + _links
             + self: /goals/types?position=1&period=1 (string)
-            + next: /goals/types?position=1&period=1?offset=1 (string)
+            + next: /goals/types?position=1&period=1?page=1 (string)
 
 
 
@@ -330,11 +339,9 @@ Every goal type has a scale of appraisal values.
     + type_id (required, number, `1`) ... ID of the goal type
     
 + Attributes (object)
-    + appraisals
-        + appraisal
-            + id: 1 (number, required)
-            + value: AGood (string, required)
-            + weight: 2 (number, required)
+    + appraisals (array)
+        + (object)
+Added
     + _links
         + self: /goals/types/1/appraisals (string)
 
@@ -357,7 +364,41 @@ List all appraisals for a given goal type.
             + self: /goals/types/1/appraisals (string)
 
 
-## Goal Type Categories
+## Goal Type Categories [/goals/types/{type_id}/categories]
+
+Every goal type has a scale of possible categories values.
+
++ Model (application/hal+json)
+
++ Parameters
+    + type_id (required, number, `1`) ... ID of the goal type
+    
++ Attributes (object)
+    + categories (array)
+        + (object)
+            + id: 1 (number, required)
+            + value: 21005 (string, required)
+    + _links
+        + self: /goals/types/1/categories (string)
+
+
+### Get Goal Type Categories [GET]
+
+List all categories for a given goal type.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body  
+    + Attributes (Goal Type Categories)
+
+
 
 
 ## Goal Evaluation [/positions/{position_id}/goals/{goal_id}/evaluations]
@@ -408,6 +449,7 @@ Creation of a Goal Evaluation using a POST request.
             + delete: /positions/1/goals/1/evaluations/1 (string)
 
 
+
 ### Get Goal Evaluation [GET /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
 
 Gets evaluation with given url id's.
@@ -436,6 +478,7 @@ Gets evaluation with given url id's.
             + self: /positions/1/goals/1/evaluations/1 (string)
             + update: /positions/1/goals/1/evaluations/1 (string
             + delete: /positions/1/goals/1/evaluations/1 (string)
+
 
 
 ### Udate Goal Evaluation [PUT /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
@@ -491,7 +534,6 @@ This DELETE request will delete the Goal Evaluation with the existing request id
 
 
 
-
 ## Periods Collection [/periods]
 
 Periods define timeline stages in any corporative element.
@@ -506,6 +548,7 @@ Periods define timeline stages in any corporative element.
 + Attributes (object)
     + id: 12 (number, required)
     + name: Q3-2015 (string, required)
+
 
 ### Get period [GET]
 
@@ -526,6 +569,8 @@ Gets period identified by url id parameter.
         + _links
             + self: /periods/1 (string)
             + next: /periods/2 (string, required)
+
+
 
 ### Get current period [GET /periods/current]
 
@@ -567,6 +612,8 @@ Gets the perdiod that is currently applied.
     + comment: This is the comment for a period evaluation (string)
 
 
+
+
 ### Get Period Evaluation [GET]
 
 Gets period evaluation with given url id's.
@@ -588,6 +635,8 @@ Gets period evaluation with given url id's.
             + self: /positions/1/periods/1/evaluations (string)
             + update: /positions/1/periods/1/evaluations (string)
             + delete: /positions/1/periods/1/evaluations (string)
+
+
 
 
 ### Create Period Evaluation [POST]
@@ -637,23 +686,19 @@ This PUT request will modify the existing Period Evaluation with given url param
             + update: /positions/1/goals/1/evaluations/1 (string)
 
 
-## Period Evaluation Status
-
-## Period Evaluation Appraisals
 
 # Data Structures
 
-## Pagination 
-    + offset: 0 (number, required)
-    + limit: 10 (number, required)
-    + total: 100 (number, required)
+## Page
++ page: 0 (number, required)        
+<!-- + position_id (required, number, `1`) ... ID of the position in the form of an integer -->
+<!-- number -->
++ limit: 10 (number, required)
+ <!-- size -->
++ total_elements: 100 (number, required)
++ total_pages: 10 (number, required)
 
 ## Appraisal
-    + id: 1 (string, required)
-    + value: A-Good (string, required)
-    + weight: 2 (number, required)
-
-## Link (object)
-    + _links
-        + self: /periods/1 (string)
-        + next: /periods/2 (string)
++ id: 1 (string, required)
++ value: A-Good (string, required)
++ weight: 2 (number, required)
