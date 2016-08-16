@@ -72,7 +72,7 @@ Gets a position given it's id.
 + Attributes (object)
     + id: 1 (number, required)
     + name: Java developer (string, required)
-    + description: Developer of the main system application (string)
+    + description: Developer of the Core MM API (string)
     + _links
         + self: /position/1 (string)
         + employee: /employees/1 (string)
@@ -216,9 +216,9 @@ This DELETE request will delete the goal with the existing request parameter id.
 
 
 
-### Goals Collection [/goals]
 
-### Create a new goal [POST]
+
+### Create a new goal [POST /goals]
 
 A new goal will be created using this action.
 This action takes a JSON payload as a part of the request.
@@ -245,6 +245,29 @@ Response then return specific header and body
 
 + Response 201 (application/hal+json)
     + Attributes (Goal)
+
+
+### Get all goals [GET /position/{position_id}/goals]
+
+All Goals from given position are returned through a GET request where the position id is sent as an URL parameter.
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position of the owner of the goals in the form of an integer
+    
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+
+    + Headers
+    
+    + Body
+    + Attributes (array[HalGoal])
 
 
 
@@ -297,9 +320,7 @@ Gets Goal Type with given url parameter id.
 
 
 
-## Goal Types Collection [/goals/types?{position}&{period}] 
-
-### List Goal Types [GET]
+### List Goal Types [GET /goals/types?{position}&{period}]
 
 List a list of goal types appliable to a goal.
 If position or/and period parameters are sent, returned goal type are only appliable for that period and position.
@@ -339,9 +360,7 @@ Every goal type has a scale of appraisal values.
     + type_id (required, number, `1`) ... ID of the goal type
     
 + Attributes (object)
-    + appraisals (array)
-        + (object)
-Added
+    + appraisals (array[Appraisal])
     + _links
         + self: /goals/types/1/appraisals (string)
 
@@ -629,7 +648,7 @@ Gets period evaluation with given url id's.
     + Body
 
 + Response 200 (application/hal+json)
-    + Attributes (Period Evaluation)
+    + Attributes (Hal Period Evaluation)
     + Attributes
         + _links
             + self: /positions/1/periods/1/evaluations (string)
@@ -687,11 +706,56 @@ This PUT request will modify the existing Period Evaluation with given url param
 
 
 
+# Period Evaluation Appraisals [/periods/appraisals]
+
+Every period evaluation has a scale of appraisal values.
+
++ Model (application/hal+json)
+
++ Attributes (object)
+    + appraisals (array[Appraisal])
+    + _links
+        + self: /periods/appraisals (string)
+
+### Get Period Evaluation Appraisals [GET]
+
+List all appraisals for a given goal type.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body  
+    + Attributes (Period Evaluation Appraisals)
+        + _links
+            + self: /periods/appraisals (string)
+
+
 # Data Structures
+
+## Hal Goal
++ title: Title (string, required)        
++ description: Description (string, required)
++ _embedded
+    + creator (Position)
+    + recipient (Position)    
+    + goal_type (Goal Type)
+    + period (Period)
++ page (Page)
+
+## Hal Period Evaluation
++ comment: Period Evaluation Comment (string, required)
++ _embedded
+    + evaluator (Position)
+    + appraisal (Appraisal)
 
 ## Page
 + page: 0 (number, required)        
-<!-- + position_id (required, number, `1`) ... ID of the position in the form of an integer -->
 <!-- number -->
 + limit: 10 (number, required)
  <!-- size -->
@@ -700,5 +764,5 @@ This PUT request will modify the existing Period Evaluation with given url param
 
 ## Appraisal
 + id: 1 (string, required)
-+ value: A-Good (string, required)
++ value: AGood (string, required)
 + weight: 2 (number, required)
