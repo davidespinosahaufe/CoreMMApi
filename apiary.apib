@@ -192,7 +192,7 @@ A single Goal is returned through a GET request where the goal id is sent as an 
     + Headers
     
     + Body
-    + Attributes (Goal)
+    + Attributes (Hal Goal)
 
 
 ### Delete a goal [DELETE /goals/{goal_id}?{period}&{recipient}&{type}]
@@ -267,7 +267,7 @@ All Goals from given position are returned through a GET request where the posit
     + Headers
     
     + Body
-    + Attributes (array[HalGoal])
+    + Attributes (array[Hal Goal])
 
 
 
@@ -383,7 +383,7 @@ List all appraisals for a given goal type.
             + self: /goals/types/1/appraisals (string)
 
 
-## Goal Type Categories [/goals/types/{type_id}/categories]
+### Goal Type Categories [/goals/types/{type_id}/categories]
 
 Every goal type has a scale of possible categories values.
 
@@ -618,6 +618,7 @@ Gets the perdiod that is currently applied.
 + evaluator: Position Id of the creator of the Evalution (string, required)
 + appraisal: Id of the appraisal value (string)  
 + comment: This is the comment for a period evaluation (string)
++ status: Status of the Period Evaluation (Period Evaluation Status)
 
 + Model (application/hal+json)
 
@@ -629,6 +630,7 @@ Gets the perdiod that is currently applied.
     + evaluator: Position Id of the evaluator of the Evalution (string, required)
     + appraisal: Id of the appraisal value (string)  
     + comment: This is the comment for a period evaluation (string)
+    + status (Period Evaluation Status)
 
 
 
@@ -706,19 +708,10 @@ This PUT request will modify the existing Period Evaluation with given url param
 
 
 
-# Period Evaluation Appraisals [/periods/appraisals]
+
+### Get Period Evaluation Appraisals [GET /periods/appraisals]
 
 Every period evaluation has a scale of appraisal values.
-
-+ Model (application/hal+json)
-
-+ Attributes (object)
-    + appraisals (array[Appraisal])
-    + _links
-        + self: /periods/appraisals (string)
-
-### Get Period Evaluation Appraisals [GET]
-
 List all appraisals for a given goal type.
 
 + Request (application/json)
@@ -731,9 +724,56 @@ List all appraisals for a given goal type.
             
 + Response 200 (application/hal+json)
     + Body  
-    + Attributes (Period Evaluation Appraisals)
+    + Attributes
+        + appraisals (array[Appraisal])
         + _links
             + self: /periods/appraisals (string)
+
+
+
+### Get Period Evaluation Status [GET /periods/{period_id}/status]
+
+Every period evaluation has status.
+List the status for a given period.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body  
+    + Attributes
+        + status (Period Evaluation Status)
+        + _links
+            + self: /periods/1/status (string)
+            + update: /periods/1/status (string)
+
+
+### Udate Period Evaluation Status [PUT /periods/{period_id}/status]
+
+This PUT request will modify the existing Period Evaluation Status with given url parameter ids.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+
++ Response 200 (application/hal+json)
+    + Attributes (Period Evaluation Status)
+    + Attributes
+        + _links
+            + self: /periods/1/status (string)
+            + update: /periods/1/status (string)
+
 
 
 # Data Structures
@@ -750,9 +790,16 @@ List all appraisals for a given goal type.
 
 ## Hal Period Evaluation
 + comment: Period Evaluation Comment (string, required)
++ value (Appraisal, required)
 + _embedded
     + evaluator (Position)
     + appraisal (Appraisal)
+
+## Period Evaluation Status
++ status (enum)
+    + Evaluate
+    + Aproved
+    + Confirmed
 
 ## Page
 + page: 0 (number, required)        
@@ -766,3 +813,7 @@ List all appraisals for a given goal type.
 + id: 1 (string, required)
 + value: AGood (string, required)
 + weight: 2 (number, required)
+
+## Category
++ id: 1 (number, required)
++ value: 21005 (string, required)
