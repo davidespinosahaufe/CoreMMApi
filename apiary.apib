@@ -102,6 +102,8 @@ A single Position is returned through a GET request where the position id is sen
 
 ### GET Position Direct Reports [GET /positions/{position_id}/direct_reports]
 
+Returns list of position who direct reports given position id.
+
 + Request (application/json)
 
     + Headers
@@ -660,9 +662,9 @@ Gets period evaluation with given url id's.
 
 
 
-### Create Period Evaluation [POST]
+### Create Overall Evaluation [POST]
 
-Creation of a Period Evaluation using a POST request.
+Creation of a Overall Evaluation using a POST request.
 
 + Request (application/json)
 
@@ -685,9 +687,9 @@ Creation of a Period Evaluation using a POST request.
 
 
 
-### Udate Period Evaluation [PUT]
+### Update Overall Evaluation [PUT]
 
-This PUT request will modify the existing Period Evaluation with given url parameter ids.
+This PUT request will modify the existing Overall Evaluation with given url parameter ids.
 
 + Request (application/json)
 
@@ -709,7 +711,7 @@ This PUT request will modify the existing Period Evaluation with given url param
 
 
 
-### Get Period Evaluation Appraisals [GET /periods/appraisals]
+### Get Overall Evaluation Appraisals [GET /periods/appraisals]
 
 Every period evaluation has a scale of appraisal values.
 List all appraisals for a given goal type.
@@ -731,7 +733,7 @@ List all appraisals for a given goal type.
 
 
 
-### Get Period Evaluation Status [GET /periods/{period_id}/status]
+### Get Overall Evaluation Status [GET /periods/{period_id}/status]
 
 Every period evaluation has status.
 List the status for a given period.
@@ -753,7 +755,7 @@ List the status for a given period.
             + update: /periods/1/status (string)
 
 
-### Udate Period Evaluation Status [PUT /periods/{period_id}/status]
+### Udate Overall Evaluation Status [PUT /periods/{period_id}/status]
 
 This PUT request will modify the existing Period Evaluation Status with given url parameter ids.
 
