@@ -152,6 +152,7 @@ Returns list of position who direct reports given position id.
     + category: 1020001 (string)
 
 
+
 ### Modify a goal [PUT]
 
 A  goal will be modified using this action.
@@ -176,6 +177,7 @@ Response then return specific header and body
     + Body
     + Attributes (Goal)
     
+
 
 ### Get a goal [GET]
 
@@ -595,7 +597,7 @@ Gets period identified by url id parameter.
 
 ### Get current period [GET /periods/current]
 
-Gets the perdiod that is currently applied.
+Gets the period that is currently applied.
 
 + Request (application/json)
 
@@ -615,12 +617,12 @@ Gets the perdiod that is currently applied.
 
 
 
-## Period Evaluation [/positions/{position_id}/periods/{period_id}/evaluations]
+## Overall Evaluation [/positions/{position_id}/periods/{period_id}/evaluations]
 
 + evaluator: Position Id of the creator of the Evalution (string, required)
 + appraisal: Id of the appraisal value (string)  
-+ comment: This is the comment for a period evaluation (string)
-+ status: Status of the Period Evaluation (Period Evaluation Status)
++ comment: This is the comment for a overall evaluation (string)
++ status: Status of the Overall Evaluation (Overall Evaluation Status)
 
 + Model (application/hal+json)
 
@@ -632,14 +634,14 @@ Gets the perdiod that is currently applied.
     + evaluator: Position Id of the evaluator of the Evalution (string, required)
     + appraisal: Id of the appraisal value (string)  
     + comment: This is the comment for a period evaluation (string)
-    + status (Period Evaluation Status)
+    + status (Overall Evaluation Status)
 
 
 
 
-### Get Period Evaluation [GET]
+### Get Overall Evaluation [GET]
 
-Gets period evaluation with given url id's.
+Gets overall evaluation with given url id's.
 
 + Request (application/json)
 
@@ -652,7 +654,7 @@ Gets period evaluation with given url id's.
     + Body
 
 + Response 200 (application/hal+json)
-    + Attributes (Hal Period Evaluation)
+    + Attributes (Hal Overall Evaluation)
     + Attributes
         + _links
             + self: /positions/1/periods/1/evaluations (string)
@@ -676,10 +678,10 @@ Creation of a Overall Evaluation using a POST request.
             Location: /positions/1/goals/1/evaluations/1
     
     + Body
-    + Attributes (Period Evaluation)
+    + Attributes (Overall Evaluation)
 
 + Response 201 (application/hal+json)
-    + Attributes (Period Evaluation)
+    + Attributes (Overall Evaluation)
     + Attributes
         + _links
             + self: /positions/1/goals/1/evaluations/1 (string)
@@ -702,7 +704,7 @@ This PUT request will modify the existing Overall Evaluation with given url para
     + Body
 
 + Response 200 (application/hal+json)
-    + Attributes (Period Evaluation)
+    + Attributes (Overall Evaluation)
     + Attributes
         + _links
             + self: /positions/1/goals/1/evaluations/1 (string)
@@ -713,7 +715,7 @@ This PUT request will modify the existing Overall Evaluation with given url para
 
 ### Get Overall Evaluation Appraisals [GET /periods/appraisals]
 
-Every period evaluation has a scale of appraisal values.
+Every overall evaluation has a scale of appraisal values.
 List all appraisals for a given goal type.
 
 + Request (application/json)
@@ -735,7 +737,11 @@ List all appraisals for a given goal type.
 
 ### Get Overall Evaluation Status [GET /periods/{period_id}/status]
 
-Every period evaluation has status.
+Every overall evaluation has a status.
+Possible states are:
++ Evaluate: Default status for an Overall Evaluation
++ Aproved: Aproved status, the overall period is ready to be confirmed.
++ Confirmed: Confirmed status, no changes should be allowd in the evaluation.
 List the status for a given period.
 
 + Request (application/json)
@@ -749,15 +755,16 @@ List the status for a given period.
 + Response 200 (application/hal+json)
     + Body  
     + Attributes
-        + status (Period Evaluation Status)
+        + status (Overall Evaluation Status)
         + _links
             + self: /periods/1/status (string)
             + update: /periods/1/status (string)
 
 
+
 ### Udate Overall Evaluation Status [PUT /periods/{period_id}/status]
 
-This PUT request will modify the existing Period Evaluation Status with given url parameter ids.
+This PUT request will modify the existing Overall Evaluation Status with given url parameter ids.
 
 + Request (application/json)
 
@@ -770,7 +777,7 @@ This PUT request will modify the existing Period Evaluation Status with given ur
     + Body
 
 + Response 200 (application/hal+json)
-    + Attributes (Period Evaluation Status)
+    + Attributes (Overall Evaluation Status)
     + Attributes
         + _links
             + self: /periods/1/status (string)
@@ -790,14 +797,14 @@ This PUT request will modify the existing Period Evaluation Status with given ur
     + period (Period)
 + page (Page)
 
-## Hal Period Evaluation
-+ comment: Period Evaluation Comment (string, required)
+## Hal Overall Evaluation
++ comment: Overall Evaluation Comment (string, required)
 + value (Appraisal, required)
 + _embedded
     + evaluator (Position)
     + appraisal (Appraisal)
 
-## Period Evaluation Status
+## Overall Evaluation Status
 + status (enum)
     + Evaluate
     + Aproved
@@ -805,9 +812,7 @@ This PUT request will modify the existing Period Evaluation Status with given ur
 
 ## Page
 + page: 0 (number, required)        
-<!-- number -->
 + limit: 10 (number, required)
- <!-- size -->
 + total_elements: 100 (number, required)
 + total_pages: 10 (number, required)
 
