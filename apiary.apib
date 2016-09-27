@@ -1,4 +1,4 @@
-FORMAT: 1A
+wFORMAT: 1A
 
 # Core MM API
 
@@ -25,8 +25,9 @@ Core MM is an API allowing consumers to access employee app features.
     + surname: Doe (string, required)
     + title: Senior Software Engineer. (string)
     + photography: /images/1 (string)
-    + _links
-        + self: /employees/1 (string)
+    + _links 
+        + self 
+            + href:/employees/1, (string)
     + _embedded
         + positions (array[Position])
 
@@ -61,9 +62,9 @@ A position identifes an occupancy into the company.
 
 Gets a position given it's id.
 
-+ id (integer) - Id of the position
++ id (number) - Id of the position
 + name (string) - Name of the position
-+ description (string) - DEscription of the position
++ description (string) - Description of the position
 
 + Model (application/hal+json)
 
@@ -74,8 +75,12 @@ Gets a position given it's id.
     + name: Java developer (string, required)
     + description: Developer of the Core MM API (string)
     + _links
-        + self: /position/1 (string)
-        + employee: /employees/1 (string)
+        + self 
+            + href: /position/4 (string)
+        + manager 
+            + href: /position/1 (string)
+        + employee 
+            + href: /employees/1 (string)
 
 
 
@@ -118,17 +123,22 @@ Returns list of position who direct reports given position id.
     
     + Body  
     + Attributes (object)
-        + direct_reports (array[Position])
+        + _embedded
+            + direct_reports (array[Position])
         + page (Page)
         + _links
-            + self: /positions/1/direct_reports?page=1&limit=10 (string)
-            + next: /positions/1/direct_reports?page=2&limit=10 (string)
+            + self 
+                + href: /positions/1/direct_reports?page=0&limit=10 (string)
+            + next
+                + href: /positions/1/direct_reports?page=1&limit=10 (string)
 
 
 
     
 
 ## Goal [/goals/{goal_id}]
+
+There are 7 different types of goals, when a goal type "Objective" is returned, additional links for parent goal and company goal will be returned.
 
 + period (integer) - Id of the period
 + type (integer) - Id of type of goal
@@ -137,20 +147,28 @@ Returns list of position who direct reports given position id.
 + creator (string) - Position id of the Goal creator
 + recipient (integer) - Position id of he Goal recipient
 + category (string) - Category of the created Goal
++ weight (number) - Weight of the goal
 
 + Model (application/hal+json)
 
 + Parameters
     + goal_id (required, number, `1`) ... ID of the goal in the form of an integer
 + Attributes (object)
-    + period: 103 (number, required)
-    + type: 2 (number, required)
     + title: Title for demo (string, required)
     + description: It seems that we can create goals. (string)
-    + creator: 76 (string, required)
-    + recipient: 81 (number, required)
     + category: 1020001 (string)
-
+    + weight: 3 (number)
+    + _links
+        + owner 
+            + href: /positions/4
+        + goal_type
+            + href: /goals/types/2
+        + period
+            + href: /periods/3
+        + parent
+            + href: /goals/2 (required, string)
+        + company_goal
+            + href: /goals/3 (required, string)
 
 
 ### Modify a goal [PUT]
@@ -196,7 +214,8 @@ A single Goal is returned through a GET request where the goal id is sent as an 
     + Headers
     
     + Body
-    + Attributes (Hal Goal)
+    + Attributes (Goal)
+
 
 
 ### Delete a goal [DELETE /goals/{goal_id}?{period}&{recipient}&{type}]
@@ -274,6 +293,28 @@ All Goals from given position are returned through a GET request where the posit
     + Attributes (array[Hal Goal])
 
 
+### Get all goals from a period [GET /position/{position_id}/period/{period_id}/goals]
+
+All Goals from given position and period are returned through a GET request where the position id and period id are sent as an URL parameter.
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position of the owner of the goals in the form of an integer
+    + period_id (required, number, `1`) ... ID of the period where the goals are applied, in the form of an integer
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+
+    + Headers
+    
+    + Body
+    + Attributes (array[Hal Goal])
 
 ## Goal Type [/goals/types/{type_id}]
 
@@ -299,15 +340,17 @@ Every goal type has a scale of possible categories values.
     + type_id: 1 (required, number) ... ID of the goal type in the form of an integer
 
 + Attributes (object)
-    + type: 1 (number, required)
-    + name: competence (string, required)
-    + appraisals (array[Appraisal])
-    + categories (array)
-        + (object)
-            + id: 1 (number, required)
-            + value: 21005 (string, required)
+    + type: 2 (number, required)
+    + name: objective (string, required)
+    + _embedded
+        + appraisals (array[Appraisal])
+        + categories (array)
+            + (object)
+                + id: 1 (number, required)
+                + value: 21005 (string, required)
     + _links
-        + self: /goals/types/1 (string)
+        + self
+            + href: /goals/types/1 (string)
 
 
 
@@ -350,12 +393,15 @@ If position or/and period parameters are sent, returned goal type are only appli
 + Response 200 (application/hal+json)
     + Body  
     + Attributes (object)
-        + types (array[Goal Type])
+        + _embedded
+            + types (array[Goal Type])
         + page (Page)
     + Attributes
         + _links
-            + self: /goals/types?position=1&period=1 (string)
-            + next: /goals/types?position=1&period=1?page=1 (string)
+            + self
+                + href: /goals/types?position=1&period=1 (string)
+            + next
+                + href: /goals/types?position=1&period=1?page=1 (string)
 
 
 
@@ -364,11 +410,15 @@ If position or/and period parameters are sent, returned goal type are only appli
 
 ## Goal Evaluation [/positions/{position_id}/goals/{goal_id}/evaluations]
 
++ vale: Value of the evaluation (string)  
++ comment: This is the comment for a goal evaluation (string)
+
+As links:
+
 + evaluator: Position Id of the creator of the Evalution (string, required)
 + period: Id of the period where the evaluation belongs (string, required)
 + goalType: Id of the related goal type (string, required)
-+ appraisal: Id of the appraisal value (string)  
-+ comment: This is the comment for a goal evaluation (string)
+
 
 + Model (application/hal+json)
 
@@ -377,10 +427,7 @@ If position or/and period parameters are sent, returned goal type are only appli
     + goal_id (required, string, `1-2-3-4`) ... ID of the goal in the form of string
     
 + Attributes (object)
-    + evaluator: Position Id of the evaluator of the Evalution (string, required)
-    + period: 103 (string, required)
-    + goalType: 2 (string, required)
-    + appraisal: 3 (string)  
+    + value: AA (string)  
     + comment: This is the comment for a goal evaluation (string)
 
 
@@ -405,10 +452,18 @@ Creation of a Goal Evaluation using a POST request.
     + Attributes (Goal Evaluation)
     + Attributes
         + _links
-            + self: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
-            + update: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string
-            + delete: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
-
+            + period
+                + href: /periods/3
+            + evaluator
+                + href: /positions/54
+            + goal_type
+                + href: /goals/types/3
+            + self
+                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+            + update
+                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string
+            + delete
+                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
 
 
 ### Get Goal Evaluation [GET /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
@@ -436,9 +491,18 @@ Gets evaluation with given url id's.
     + Attributes (Goal Evaluation)
     + Attributes
         + _links
-            + self: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
-            + update: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string
-            + delete: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+            + period
+                + href: /periods/3
+            + evaluator
+                + href: /positions/54
+            + goal_type
+                + href: /goals/types/3
+            + self
+                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+            + update
+                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+            + delete
+                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
 
 
 
@@ -467,9 +531,18 @@ This PUT request will modify the existing Goal Evaluation with given url paramet
     + Attributes (Goal Evaluation)
     + Attributes
         + _links
-            + self: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
-            + update: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string
-            + delete: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+            + period
+                + href:/periods/3
+            + evaluator
+                + href: /positions/54
+            + goal_type
+                + href:  /goals/types/3
+            + self
+                + href:  /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+            + update
+                + href:  /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string
+            + delete
+                + href:  /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
 
 
 ### Delete a Goal Evaluation [DELETE /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
@@ -501,6 +574,12 @@ Periods define timeline stages in any corporative element.
 
 ### Period [/periods/{id}]
 
++ id: Id of the period in the numeric format (number, required)
++ name: Name of the period(string, required)
++ order: Sequence order of the period  (number, required)
++ closedForEmployeeReview: Flag that allows employee to interact with the goals included in the period.  (boolean, required)
++ closedForEvaluation: Flag that forbids further evaluations in the period. (boolean, required)
+
 + Parameters
     + id (required, number, `1`) ... ID of the period in the form of an integer
 
@@ -513,7 +592,8 @@ Periods define timeline stages in any corporative element.
     + closedForEmployeeReview: true (boolean, required)
     + closedForEvaluation: false (boolean, required)
     + _links
-        + self: /periods/12 (string)
+        + self
+            + href: /periods/12 (string)
 
 
 
@@ -571,6 +651,8 @@ Gets the period that is currently applied.
     + Attributes (array[Period])
 
 
+
+
 ## Period Evaluation [/positions/{position_id}/periods/{period_id}/evaluations]
 
 + evaluator: Position Id of the creator of the Evalution (string, required)
@@ -610,9 +692,12 @@ Gets overall evaluation with given url id's.
     + Attributes (Hal Period Evaluation)
     + Attributes
         + _links
-            + self: /positions/1/periods/1/evaluations (string)
-            + update: /positions/1/periods/1/evaluations (string)
-            + delete: /positions/1/periods/1/evaluations (string)
+            + self
+                + href: /positions/1/periods/1/evaluations (string)
+            + update
+                + href: /positions/1/periods/1/evaluations (string)
+            + delete
+                + href: /positions/1/periods/1/evaluations (string)
 
 
 
@@ -637,8 +722,10 @@ Creation of a Overall Evaluation using a POST request.
     + Attributes (Period Evaluation)
     + Attributes
         + _links
-            + self: /positions/1/goals/1/evaluations/1 (string)
-            + update: /positions/1/goals/1/evaluations/1 (string)
+            + self
+                + href: /positions/1/goals/1/evaluations/1 (string)
+            + update
+                + href: /positions/1/goals/1/evaluations/1 (string)
 
 
 
@@ -660,8 +747,10 @@ This PUT request will modify the existing Overall Evaluation with given url para
     + Attributes (Period Evaluation)
     + Attributes
         + _links
-            + self: /positions/1/goals/1/evaluations/1 (string)
-            + update: /positions/1/goals/1/evaluations/1 (string)
+            + self
+                + href: /positions/1/goals/1/evaluations/1 (string)
+            + update
+                + href: /positions/1/goals/1/evaluations/1 (string)
 
 
 
@@ -684,13 +773,14 @@ List all appraisals for a given goal type.
     + Attributes
         + appraisals (array[Appraisal])
         + _links
-            + self: /periods/appraisals (string)
+            + self
+                + href: /periods/appraisals (string)
 
 
 
 
 
-## Period Status [/positions/{position_id}/periods/{period_id}/status]
+### Period Evaluation Status [/positions/{position_id}/periods/{period_id}/status]
 
 Status of the Overall Evaluation
 
@@ -731,17 +821,19 @@ List the status for a given period.
             
 + Response 200 (application/hal+json)
     + Body  
+    + Attributes (Period Evaluation Status)
     + Attributes
-        + status (Period Status)
         + _links
-            + self: /positions/1/periods/1/status (string)
-            + update: /positions/1/periods/1/status (string)
+            + self
+                + href: /positions/1/periods/1/status (string)
+            + update
+                + href:  /positions/1/periods/1/status (string)
 
 
 
-### Udate Period Status [PUT]
+### Apply Period Evaluation Status Action [POST]
 
-This PUT request will modify the existing Period Status with given url parameter ids.
+This PUT request will aplly a period status action to the period.
 
 + Request (application/json)
 
@@ -752,21 +844,53 @@ This PUT request will modify the existing Period Status with given url parameter
             X-FORWARDED-HOST: local-133.umantis.lan
     
     + Body
-
+    + Attributes (Period Evaluation Action)
 + Response 200 (application/hal+json)
-    + Attributes (Period Status)
+    + Attributes (Period Evaluation Status)
     + Attributes
         + _links
             + self: /positions/1/periods/1/status (string)
             + update: /positions/1/periods/1/status (string)
 
 
+### Get Period Evaluation Actions [GET /static_data/periods/actions]
+
+At every period evaluation, a list of actions can be applied in order to change it's status, as well as triggers some required actions.
+
+Possible actions are:
++ AGREE_GOALS: Agreement for all goals included in the Period Evaluation.
++ CONFIRM_GOALS: Confirmation for all goals included in the Period Evaluation.
++ REOPEN_GOALS: All goals included in the Period Evaluation are reopened.
++ AGREE_EVALUATION: Agreement for current Period Evaluation.
++ CONFIRM_EVALUATION: Confirmation for current Period Evaluation.
++ REOPEN_EVALUATION: Current Period Evaluation gets reopened.
+
+List the status for a given period.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body
+    + Attributes
+        + _embedded
+            + actions (array[Period Evaluation Action])
+        + page (Page)
 
 # Data Structures
+
+## Period Evaluation Action
++ action: AGREE_GOALS (string, required)
 
 ## Hal Goal
 + title: Title (string, required)        
 + description: Description (string, required)
++ weight: 5 (number, optional)
 + _embedded
     + creator (Position)
     + recipient (Position)    
@@ -784,8 +908,6 @@ This PUT request will modify the existing Period Status with given url parameter
 ## Page
 + page: 0 (number, required)        
 + limit: 10 (number, required)
-+ total_elements: 100 (number, required)
-+ total_pages: 10 (number, required)
 
 ## Appraisal
 + id: 1 (string, required)
