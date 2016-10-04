@@ -273,6 +273,7 @@ Response then return specific header and body
 ### Get all goals [GET /position/{position_id}/goals]
 
 All Goals from given position are returned through a GET request where the position id is sent as an URL parameter.
+Only goals for period set as CURRENT will be returned.
 
 + Parameters
     + position_id (required, number, `1`) ... ID of the position of the owner of the goals in the form of an integer
@@ -290,7 +291,15 @@ All Goals from given position are returned through a GET request where the posit
     + Headers
     
     + Body
-    + Attributes (array[Hal Goal])
+    + Attributes (object)
+        + _embedded
+            + goals (array[Goal])
+        + page (Page)
+        + _links
+            + self
+                + href: /position/3/goals (string)
+            + next
+                + href: /position/3/goals?page=1 (string)
 
 
 ### Get all goals from a period [GET /position/{position_id}/period/{period_id}/goals]
@@ -314,7 +323,15 @@ All Goals from given position and period are returned through a GET request wher
     + Headers
     
     + Body
-    + Attributes (array[Hal Goal])
+    + Attributes (object)
+        + _embedded
+            + goals (array[Goal])
+        + page (Page)
+        + _links
+            + self
+                + href: /position/3/goals (string)
+            + next
+                + href: /position/3/goals?page=1 (string)
 
 ## Goal Type [/goals/types/{type_id}]
 
@@ -373,7 +390,7 @@ Gets Goal Type with given url parameter id.
 
 
 
-### List Goal Types [GET /goals/types?{position}&{period}]
+### List Goal Types [GET /goals/types{?position,period}]
 
 List a list of goal types appliable to a goal.
 If position or/and period parameters are sent, returned goal type are only appliable for that period and position.
@@ -589,8 +606,8 @@ Periods define timeline stages in any corporative element.
     + id: 12 (number, required)
     + name: Q3-2015 (string, required)
     + order: 5  (number, required)
-    + closedForEmployeeReview: true (boolean, required)
-    + closedForEvaluation: false (boolean, required)
+    + closed_for_employee_review: true (boolean, required)
+    + closed_for_evaluation: false (boolean, required)
     + _links
         + self
             + href: /periods/12 (string)
@@ -648,8 +665,17 @@ Gets the period that is currently applied.
             X-FORWARDED-HOST: local-133.umantis.lan
             
 + Response 200 (application/hal+json)
-    + Attributes (array[Period])
-
+    + Body  
+    + Attributes (object)
+        + _embedded
+            + periods (array[Period])
+        + page (Page)
+    + Attributes
+        + _links
+            + self
+                + href: /periods (string)
+            + next
+                + href: /periods?page=1 (string)
 
 
 
@@ -785,9 +811,18 @@ List all appraisals for a given goal type.
 Status of the Overall Evaluation
 
 + status (enum)
-    + Evaluate
-    + Aproved
-    + Confirmed
+    + Not yet started
+    + In agreement
+    + Agreed
+    + Agreed and confirmed
+    + Evaluation completed
+    + Evaluation completed and confirmed
+    + Suspended
++ last modified: Date of last time it was modified
+
+As links:
+
++ last modifier: Position who triggered last status action
 
 + Model (application/hal+json)
 
@@ -797,19 +832,51 @@ Status of the Overall Evaluation
     
 + Attributes (object)
     + status (enum)
-        + Evaluate
-        + Aproved
-        + Confirmed
+        + NOT_YET_STARTED
+        + IN_AGREEMENT
+        + AGREED
+        + AGREED_AND_CONFIRMED
+        + EVALUATION_COMPLETED
+        + EVALUATION_COMPLETED_AND_CONFIRMED
+        + SUSPENDED
+    + last_modified: `2015-05-05T12:30:00` (required, string)
     
 
 ### Get Period Evaluation Status [GET]
 
 Every period has a status.
-Possible states are:
-+ Evaluate: Default status for an Period Evaluation
-+ Aproved: Aproved status, the period is ready to be confirmed.
-+ Confirmed: Confirmed status, no changes should be allowed in the period.
-List the status for a given period.
+Returns the status for a given period.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+    + Body  
+    + Attributes (Period Evaluation Status)
+    + Attributes
+        + _links
+            + self
+                + href: /positions/1/periods/1/status (string)
+            + update
+                + href:  /positions/1/periods/1/status (string)
+
+
+### Get current Period Evaluation Status [GET /positions/{position_id}/periods/current/status]
+
+Returns status from current period.
+
+Possible status are:
++ EMPTY: This period hasn't still been initialized, so it doesn't has any content.
++ OPEN: Period Evaluation state after it has been initialized. It may contain contents/goals.
++ GOALS_AGREED: All goals included in this period are agreed.
++ GOALS_CONFIRMED: All goals included in this period are confirmed. If a goal is added or deleted, the status changes automatically.
++ EVALUATION_AGREED: Period Evaluation status is on agreement.
++ EVALUATION_CONFIRMED: Period Evaluation status is confirmed.
 
 + Request (application/json)
 
@@ -831,7 +898,7 @@ List the status for a given period.
 
 
 
-### Apply Period Evaluation Status Action [POST]
+### Apply Period Evaluation Status Action [POST /positions/{position_id}/periods/{period_id}/actions]
 
 This PUT request will aplly a period status action to the period.
 
@@ -849,8 +916,10 @@ This PUT request will aplly a period status action to the period.
     + Attributes (Period Evaluation Status)
     + Attributes
         + _links
-            + self: /positions/1/periods/1/status (string)
-            + update: /positions/1/periods/1/status (string)
+            + self
+                + href: /positions/1/periods/1/status (string)
+            + update
+                + href: /positions/1/periods/1/status (string)
 
 
 ### Get Period Evaluation Actions [GET /static_data/periods/actions]
@@ -880,7 +949,7 @@ List the status for a given period.
     + Attributes
         + _embedded
             + actions (array[Period Evaluation Action])
-        + page (Page)
+
 
 # Data Structures
 
