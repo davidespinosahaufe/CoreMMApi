@@ -1,4 +1,4 @@
-wFORMAT: 1A
+FORMAT: 1A
 
 # Core MM API
 
@@ -348,7 +348,7 @@ Every goal type has a scale of possible categories values.
     + feedback = 6
     + potential = 7
 + name: Name of the goal type (string, required)
-+ appraisals (array[Appraisal]): List of possibles values
++ appraisals (array[AppraisalType]): List of possibles values
 + categories (array): List of categories
     
 + Model (application/hal+json)
@@ -360,7 +360,7 @@ Every goal type has a scale of possible categories values.
     + type: 2 (number, required)
     + name: objective (string, required)
     + _embedded
-        + appraisals (array[Appraisal])
+        + appraisals (array[AppraisalType])
         + categories (array)
             + (object)
                 + id: 1 (number, required)
@@ -681,11 +681,6 @@ Gets the period that is currently applied.
 
 ## Period Evaluation [/positions/{position_id}/periods/{period_id}/evaluations]
 
-+ evaluator: Position Id of the creator of the Evalution (string, required)
-+ appraisal: Id of the appraisal value (string)  
-+ comment: This is the comment for a overall evaluation (string)
-+ status: Status of the Overall Evaluation (Overall Evaluation Status)
-
 + Model (application/hal+json)
 
 + Parameters
@@ -693,11 +688,6 @@ Gets the period that is currently applied.
     + period_id (required, number, `1`) ... ID of the period in the form of an integer
     
 + Attributes (object)
-    + evaluator: Position Id of the evaluator of the Evalution (string, required)
-    + appraisal: 3 (string)  
-    + comment: This is the comment for a period evaluation (string)
-
-
 
 
 ### Get Period Evaluation [GET]
@@ -715,17 +705,18 @@ Gets overall evaluation with given url id's.
     + Body
 
 + Response 200 (application/hal+json)
-    + Attributes (Hal Period Evaluation)
     + Attributes
         + _links
             + self
                 + href: /positions/1/periods/1/evaluations (string)
-            + update
-                + href: /positions/1/periods/1/evaluations (string)
-            + delete
-                + href: /positions/1/periods/1/evaluations (string)
-
-
+            + period
+                + href: /periods/1 (string)
+            + position
+                + href: /positions/1 (string)
+            + employee
+                + href: /employees/1 (string)
+        + _embedded
+            + evaluation (PeriodEvaluationType)
 
 
 ### Create Period Evaluation [POST]
@@ -797,7 +788,7 @@ List all appraisals for a given goal type.
 + Response 200 (application/hal+json)
     + Body  
     + Attributes
-        + appraisals (array[Appraisal])
+        + appraisals (array[AppraisalType])
         + _links
             + self
                 + href: /periods/appraisals (string)
@@ -808,20 +799,17 @@ List all appraisals for a given goal type.
 
 ### Period Evaluation Status [/positions/{position_id}/periods/{period_id}/status]
 
-Status of the Overall Evaluation
+Status of the Period Evaluation
 
 + status (enum)
-    + Not yet started
-    + In agreement
-    + Agreed
-    + Agreed and confirmed
-    + Evaluation completed
-    + Evaluation completed and confirmed
-    + Suspended
-+ last modified: Date of last time it was modified
-
+    + EMPTY
+    + OPEN
+    + GOALS_AGREED
+    + GOALS_CONFIRMED
+    + EVALUATION_AGREED
+    + EVALUATION_CONFIRMED
+<!-- + last modified: Date of last time it was modified -->
 As links:
-
 + last modifier: Position who triggered last status action
 
 + Model (application/hal+json)
@@ -832,14 +820,13 @@ As links:
     
 + Attributes (object)
     + status (enum)
-        + NOT_YET_STARTED
-        + IN_AGREEMENT
-        + AGREED
-        + AGREED_AND_CONFIRMED
-        + EVALUATION_COMPLETED
-        + EVALUATION_COMPLETED_AND_CONFIRMED
-        + SUSPENDED
-    + last_modified: `2015-05-05T12:30:00` (required, string)
+        + EMPTY
+        + OPEN
+        + GOALS_AGREED
+        + GOALS_CONFIRMED
+        + EVALUATION_AGREED
+        + EVALUATION_CONFIRMED
+    <!-- + last_modified: `2015-05-05T12:30:00` (required, string) -->
     
 
 ### Get Period Evaluation Status [GET]
@@ -901,6 +888,7 @@ Possible status are:
 ### Apply Period Evaluation Status Action [POST /positions/{position_id}/periods/{period_id}/actions]
 
 This PUT request will aplly a period status action to the period.
+Retrieve it's possible values on [Get Period Evaluation Actions] .
 
 + Request (application/json)
 
@@ -925,6 +913,7 @@ This PUT request will aplly a period status action to the period.
 ### Get Period Evaluation Actions [GET /static_data/periods/actions]
 
 At every period evaluation, a list of actions can be applied in order to change it's status, as well as triggers some required actions.
+List all actions that can be applied to a Period Evaluation in order to change it status.
 
 Possible actions are:
 + AGREE_GOALS: Agreement for all goals included in the Period Evaluation.
@@ -934,7 +923,7 @@ Possible actions are:
 + CONFIRM_EVALUATION: Confirmation for current Period Evaluation.
 + REOPEN_EVALUATION: Current Period Evaluation gets reopened.
 
-List the status for a given period.
+
 
 + Request (application/json)
 
@@ -967,21 +956,65 @@ List the status for a given period.
     + period (Period)
 + page (Page)
 
-## Hal Period Evaluation
-+ comment: Overall Evaluation Comment (string, required)
-+ value (Appraisal, required)
+## PeriodEvaluationType
++ status: Status of the evaluation for the position for a given period
 + _embedded
-    + evaluator (Position)
-    + appraisal (Appraisal)
+    + overallEvaluations (array[OverallEvaluationType])
+    + goalEvaluations (array[GoalEvaluationType])    
+    + mainGoalEvaluations (array[MainGoalEvaluationType])
+    + appraisals (array[AppraisalType])
+
+## OverallEvaluationType
++ id: 1 (string, required)
++ score_value: 0.8 (number, required)
++ comment: overall evaluation Comment (string, required)
++ answer: customer defined dynamic list value (string, required)
++ evaluatorType (EvaluatorType)
+
+## GoalEvaluationType
++ id: 1 (string, required)
++ score_value: 0.8 (number, required)
++ comment: evaluation comment (string)
++ evaluation_type (enum)
+    + OBJECTIVE
+    + TASK
+    + SKILL
+    + DEVELOPMENT
+    + BEHAVIOR
+    + FEEDBACK
+    + COMPANY_GOAL
+    + DEPARTMENT_GOAL
++ answer: customer defined dynamic list value (string, required)
++ _links
+    + goal
+        + href: /goals/1
+
+## MainGoalEvaluationType
++ evaluatorType (EvaluatorType)
++ _embedded
+    + goalEvaluation (GoalEvaluationType)
+
+## EvaluatorType (enum)
+    + MANAGER
+    + EMPLOYEE
+
+## AppraisalType
++ evaluatorEmail
+I actually have doubts about the Evaluator shall it be a link?
+Problems: if external person, the email is enough
+but if employee, who's details are not accessible to the current user then a link won't work...
++ creation_date: `2015-05-05T12:30:00` (optional, string)
++ modification_date: `2015-05-05T12:30:00` (optional, string)
++ _embedded
+    + goalEvaluation (GoalEvaluationType)
++ _links
+    + evaluator
+        + href: /persons/1
+
 
 ## Page
 + page: 0 (number, required)        
 + limit: 10 (number, required)
-
-## Appraisal
-+ id: 1 (string, required)
-+ value: AGood (string, required)
-+ weight: 2 (number, required)
 
 ## Category
 + id: 1 (number, required)
