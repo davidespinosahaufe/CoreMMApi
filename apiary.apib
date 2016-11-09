@@ -690,9 +690,43 @@ Gets the period that is currently applied.
 + Attributes (object)
 
 
-### Get Period Evaluation [GET]
+### Get Period Evaluation [GET /positions/{position_id}/periods/{period_id}/evaluations/{evaluation_id}]
 
-Gets overall evaluation with given url id's.
+Gets period evaluation pertaining to given position, period and id.
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + period_id (required, number, `1`) ... ID of the period in the form of an integer
+    + evaluation_id (required, number, `1`) ... ID of the evaluation in the form of an integer
+    
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+
++ Response 200 (application/hal+json)
+    + Attributes
+        + _links
+            + self
+                + href: /positions/1/periods/1/evaluations/1 (string)
+            + period
+                + href: /periods/1 (string)
+            + position
+                + href: /positions/1 (string)
+            + employee
+                + href: /employees/1 (string)
+        + _embedded
+            + evaluation (PeriodEvaluationType)
+            
+
+### Get Period Evaluations List [GET]
+
+Returns all period evaluations pertaining to given period and position.
 
 + Request (application/json)
 
@@ -721,7 +755,7 @@ Gets overall evaluation with given url id's.
 
 ### Create Period Evaluation [POST]
 
-Creation of a Overall Evaluation using a POST request.
+Creation of a period evaluation for given period and position.
 
 + Request (application/json)
 
@@ -746,10 +780,15 @@ Creation of a Overall Evaluation using a POST request.
 
 
 
-### Update Period Evaluation [PUT]
+### Update Period Evaluation [PUT /positions/{position_id}/periods/{period_id}/evaluations/{evaluation_id}]
 
-This PUT request will modify the existing Overall Evaluation with given url parameter ids.
+Updates of a period evaluation for given period, position and id.
 
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + period_id (required, number, `1`) ... ID of the period in the form of an integer
+    + evaluation_id (required, number, `1`) ... ID of the evaluation in the form of an integer
+    
 + Request (application/json)
 
     + Headers
