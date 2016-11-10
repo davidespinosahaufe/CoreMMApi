@@ -582,7 +582,32 @@ This DELETE request will delete the Goal Evaluation with the existing request id
 + Response 204
 
 
+### Create a Third Party Appraisal [POST /goals/{goal_id}/invite_person]
 
+Invite a person to review a goal.
+
++ Parameters
+    + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+    
+            { 
+                "personId": 12
+                "email": "aria.stark@starks.umantis"
+            }
+
++ Response 201 (application/hal+json)
+
+        TODO: define wich endpoint should return
+    
 
 
 ## Periods Collection [/periods]
