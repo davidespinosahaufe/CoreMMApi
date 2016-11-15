@@ -749,9 +749,9 @@ Gets period evaluation pertaining to given position and period.
             + evaluation (PeriodEvaluationType)
             
 
-### Get historical Period Evaluations of a Position [GET /positions/{position_id}/evaluations]
+### Get Period Evaluations List [GET /positions/{position_id}/evaluations]
 
-Returns all period evaluations pertaining to given period.
+Returns all period evaluations pertaining to a given position (historical overview) in reverse historical order
 
 + Request (application/json)
 
@@ -1023,8 +1023,8 @@ Possible actions are:
 + status: Status of the evaluation for the position for a given period
 + _embedded
     + overallEvaluations (array[OverallEvaluationType])
-    + goalEvaluations (array[GoalEvaluationType])    
-    + mainGoalEvaluations (array[MainGoalEvaluationType])
+    + selfGoalEvaluation (MainGoalEvaluationType)
+    + managerGoalEvaluation (MainGoalEvaluationType)
     + appraisals (array[AppraisalType])
 
 ## OverallEvaluationType
