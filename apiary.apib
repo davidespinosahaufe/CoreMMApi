@@ -582,11 +582,12 @@ This DELETE request will delete the Goal Evaluation with the existing request id
 + Response 204
 
 
-### Create a Third Party Appraisal [POST /goals/{goal_id}/invite_person]
+### Create a Third Party Appraisal [POST /positions/{position_id}/goals/{goal_id}/third_party_appraisal]
 
-Invite a person to review a goal.
+Create a third party appraisal.
 
 + Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
     + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
 
 + Request (application/json)
@@ -606,7 +607,7 @@ Invite a person to review a goal.
 
 + Response 201 (application/hal+json)
 
-        TODO: define wich endpoint should return
+        # TODO: define wich endpoint should return
     
 
 
@@ -704,7 +705,7 @@ Gets the period that is currently applied.
 
 
 
-## Period Evaluation [/positions/{position_id}/periods/{period_id}/evaluations]
+## Period Evaluation [/positions/{position_id}/periods/{period_id}/evaluation]
 
 + Model (application/hal+json)
 
@@ -715,15 +716,14 @@ Gets the period that is currently applied.
 + Attributes (object)
 
 
-### Get Period Evaluation [GET /positions/{position_id}/periods/{period_id}/evaluations/{evaluation_id}]
+### Get Period Evaluation [GET]
 
-Gets period evaluation pertaining to given position, period and id.
+Gets period evaluation pertaining to given position and period.
 
 + Parameters
     + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
     + period_id (required, number, `1`) ... ID of the period in the form of an integer
-    + evaluation_id (required, number, `1`) ... ID of the evaluation in the form of an integer
-    
+
 + Request (application/json)
 
     + Headers
@@ -738,7 +738,7 @@ Gets period evaluation pertaining to given position, period and id.
     + Attributes
         + _links
             + self
-                + href: /positions/1/periods/1/evaluations/1 (string)
+                + href: /positions/1/periods/1/evaluation (string)
             + period
                 + href: /periods/1 (string)
             + position
@@ -749,9 +749,9 @@ Gets period evaluation pertaining to given position, period and id.
             + evaluation (PeriodEvaluationType)
             
 
-### Get Period Evaluations List [GET]
+### Get historical Period Evaluations of a Position [GET /positions/{position_id}/evaluations]
 
-Returns all period evaluations pertaining to given period and position.
+Returns all period evaluations pertaining to given period.
 
 + Request (application/json)
 
@@ -767,7 +767,7 @@ Returns all period evaluations pertaining to given period and position.
     + Attributes
         + _links
             + self
-                + href: /positions/1/periods/1/evaluations (string)
+                + href: /positions/1/evaluations (string)
             + period
                 + href: /periods/1 (string)
             + position
@@ -789,7 +789,7 @@ Creation of a period evaluation for given period and position.
             Accept-Charset: application/json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
-            Location: /positions/1/goals/1/evaluations/1
+            Location: /positions/1/goals/1/evaluation
     
     + Body
     + Attributes (Period Evaluation)
@@ -799,21 +799,20 @@ Creation of a period evaluation for given period and position.
     + Attributes
         + _links
             + self
-                + href: /positions/1/goals/1/evaluations/1 (string)
+                + href: /positions/1/goals/1/evaluation (string)
             + update
-                + href: /positions/1/goals/1/evaluations/1 (string)
+                + href: /positions/1/goals/1/evaluation (string)
 
 
 
-### Update Period Evaluation [PUT /positions/{position_id}/periods/{period_id}/evaluations/{evaluation_id}]
+### Update Period Evaluation [PUT /positions/{position_id}/periods/{period_id}/evaluation]
 
 Updates of a period evaluation for given period, position and id.
 
 + Parameters
     + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
     + period_id (required, number, `1`) ... ID of the period in the form of an integer
-    + evaluation_id (required, number, `1`) ... ID of the evaluation in the form of an integer
-    
+
 + Request (application/json)
 
     + Headers
@@ -829,9 +828,9 @@ Updates of a period evaluation for given period, position and id.
     + Attributes
         + _links
             + self
-                + href: /positions/1/goals/1/evaluations/1 (string)
+                + href: /positions/1/periods/1/evaluation (string)
             + update
-                + href: /positions/1/goals/1/evaluations/1 (string)
+                + href: /positions/1/periods/1/evaluation (string)
 
 
 
