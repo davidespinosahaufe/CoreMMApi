@@ -333,6 +333,32 @@ All Goals from given position and period are returned through a GET request wher
             + next
                 + href: /position/3/goals?page=1 (string)
 
+
+
+### Invite Peer [POST /positions/{position_id}/goals/{goal_id}/invite]
+
+Invite a peer colleague to create a goal evaluation into the selected goal  .
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+    + Attributes (object)
+        + person_id: 12 (number, optional)
+        + email: aria.stark@starks.umantis (string, optional)
+
++ Response 201 (application/hal+json)
+    
+
 ## Goal Type [/goals/types/{type_id}]
 
 Every goal has a related goal type.
@@ -427,6 +453,7 @@ If position or/and period parameters are sent, returned goal type are only appli
 
 ## Goal Evaluation [/positions/{position_id}/goals/{goal_id}/evaluations]
 
++ evaluator: Evaluator of the evaluation (string)
 + vale: Value of the evaluation (string)  
 + comment: This is the comment for a goal evaluation (string)
 
@@ -444,8 +471,9 @@ As links:
     + goal_id (required, string, `1-2-3-4`) ... ID of the goal in the form of string
     
 + Attributes (object)
-    + value: AA (string)  
-    + comment: This is the comment for a goal evaluation (string)
+    + creator_id: 123 (string, optional)
+    + value: AA (string, optional)  
+    + comment: This is the comment for a goal evaluation (string, optional)
 
 
 ### Create Goal Evaluation [POST]
@@ -581,34 +609,6 @@ This DELETE request will delete the Goal Evaluation with the existing request id
    
 + Response 204
 
-
-### Create a Third Party Appraisal [POST /positions/{position_id}/goals/{goal_id}/third_party_appraisal]
-
-Create a third party appraisal.
-
-+ Parameters
-    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
-    + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
-
-+ Request (application/json)
-
-    + Headers
-    
-            Accept-Charset: application/json
-            X-AUTH-TOKEN: DEBUGTOKEN
-            X-FORWARDED-HOST: local-133.umantis.lan
-    
-    + Body
-    
-            { 
-                "personId": 12
-                "email": "aria.stark@starks.umantis"
-            }
-
-+ Response 201 (application/hal+json)
-
-        # TODO: define wich endpoint should return
-    
 
 
 ## Periods Collection [/periods]
@@ -776,63 +776,6 @@ Returns all period evaluations pertaining to a given position (historical overvi
                 + href: /employees/1 (string)
         + _embedded
             + evaluation (PeriodEvaluationType)
-
-
-### Create Period Evaluation [POST]
-
-Creation of a period evaluation for given period and position.
-
-+ Request (application/json)
-
-    + Headers
-    
-            Accept-Charset: application/json
-            X-AUTH-TOKEN: DEBUGTOKEN
-            X-FORWARDED-HOST: local-133.umantis.lan
-            Location: /positions/1/goals/1/evaluation
-    
-    + Body
-    + Attributes (Period Evaluation)
-
-+ Response 201 (application/hal+json)
-    + Attributes (Period Evaluation)
-    + Attributes
-        + _links
-            + self
-                + href: /positions/1/goals/1/evaluation (string)
-            + update
-                + href: /positions/1/goals/1/evaluation (string)
-
-
-
-### Update Period Evaluation [PUT /positions/{position_id}/periods/{period_id}/evaluation]
-
-Updates of a period evaluation for given period, position and id.
-
-+ Parameters
-    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
-    + period_id (required, number, `1`) ... ID of the period in the form of an integer
-
-+ Request (application/json)
-
-    + Headers
-    
-            Accept-Charset: application/json
-            X-AUTH-TOKEN: DEBUGTOKEN
-            X-FORWARDED-HOST: local-133.umantis.lan
-    
-    + Body
-
-+ Response 200 (application/hal+json)
-    + Attributes (Period Evaluation)
-    + Attributes
-        + _links
-            + self
-                + href: /positions/1/periods/1/evaluation (string)
-            + update
-                + href: /positions/1/periods/1/evaluation (string)
-
-
 
 
 ### Get Period Evaluation Appraisals [GET /periods/appraisals]
@@ -1008,15 +951,28 @@ Possible actions are:
 ## Period Evaluation Action
 + action: AGREE_GOALS (string, required)
 
-## Hal Goal
+## GoalType
++ id: 0-0-0-0 (string)
 + title: Title (string, required)        
-+ description: Description (string, required)
 + weight: 5 (number, optional)
++ duedate: `2015-05-05T12:30:00` (optional, string)
++ description: Description (string, required)
++ private: true (boolean)
++ creationdate: `2015-05-05T12:30:00` (optional, string)
++ modificationdate: `2015-05-05T12:30:00` (optional, string)
++ criteria: comment (string)
++ measures: comment (string)
 + _embedded
-    + creator (Position)
-    + recipient (Position)    
     + goal_type (Goal Type)
-    + period (Period)
++ _links
+    + creator
+        + href: /positions/1
+    + modifier
+        + href: /positions/1
+    + recipient
+        + href: /positions/1
+    + period
+        + href: /periods/1
 + page (Page)
 
 ## PeriodEvaluationType
