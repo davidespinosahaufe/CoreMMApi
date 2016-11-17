@@ -812,6 +812,7 @@ Gets period evaluation pertaining to given position and period.
     + Body
 
 + Response 200 (application/hal+json)
+    + Attributes (PeriodEvaluationType)
     + Attributes
         + _links
             + self
@@ -822,9 +823,7 @@ Gets period evaluation pertaining to given position and period.
                 + href: /positions/1 (string)
             + employee
                 + href: /employees/1 (string)
-        + _embedded
-            + evaluation (PeriodEvaluationType)
-            
+
 
 ### Get Period Evaluations List [GET /positions/{position_id}/evaluations]
 
@@ -1055,9 +1054,9 @@ Possible actions are:
 ## PeriodEvaluationType
 + status: Status of the evaluation for the position for a given period
 + _embedded
-    + overallEvaluations (array[OverallEvaluationType])
-    + selfGoalEvaluation (MainGoalEvaluationType)
-    + managerGoalEvaluation (MainGoalEvaluationType)
+    + overall_evaluations (array[OverallEvaluationType])
+    + self_goal_evaluation (MainGoalEvaluationType)
+    + manager_goal_evaluation (MainGoalEvaluationType)
     + appraisals (array[AppraisalType])
 
 ## OverallEvaluationType
