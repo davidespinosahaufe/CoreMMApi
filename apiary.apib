@@ -335,7 +335,7 @@ All Goals from given position and period are returned through a GET request wher
 
 
 
-### Invite Peer [POST /positions/{position_id}/goals/{goal_id}/invite]
+### Invite Peer [POST /positions/{position_id}/goals/{goal_id}/invitations]
 
 Invite a peer colleague to create a goal evaluation into the selected goal  .
 
@@ -610,6 +610,82 @@ This DELETE request will delete the Goal Evaluation with the existing request id
 + Response 204
 
 
+### Create Peer Goal Evaluation [POST /positions/{position_id}/goals/{goal_id}/invitations/{evaluation_id}]
+
+Creation of a Goal Evaluation by a peer colleague into the selected goal.
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
+    + evaluation_id (required, number, `1-2-3-4-2`) ... ID of the goal evaluation in the form of an string
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+    + Attributes (Goal Evaluation)
+
++ Response 201 (application/hal+json)
+
+    + Attributes
+        + id: 1-2-3-4-2 (string, required)
+    + Attributes (Goal Evaluation)
+    + Attributes
+        + _links
+            + period
+                + href: /periods/3
+            + goal_type
+                + href: /goals/types/3
+            + self
+                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
+            + update
+                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string
+            + delete
+                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
+
+
+### Update Peer Goal Evaluation [PUT /positions/{position_id}/goals/{goal_id}/invitations/{evaluation_id}]
+
+Update of a Goal Evaluation by a peer colleague into the selected goal.
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
+    + evaluation_id (required, number, `1-2-3-4-2`) ... ID of the goal evaluation in the form of an string
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+    + Attributes (Goal Evaluation)
+
++ Response 201 (application/hal+json)
+
+    + Attributes
+        + id: 1-2-3-4-2 (string, required)
+    + Attributes (Goal Evaluation)
+    + Attributes
+        + _links
+            + period
+                + href: /periods/3
+            + goal_type
+                + href: /goals/types/3
+            + self
+                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
+            + update
+                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string
+            + delete
+                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
 
 ## Periods Collection [/periods]
 
