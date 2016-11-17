@@ -358,6 +358,11 @@ Invite a peer colleague to create a goal evaluation into the selected goal  .
 
 + Response 201 (application/hal+json)
     
+    + Body
+    + Attributes
+        + _links
+            + create_evaluation
+                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
 
 ## Goal Type [/goals/types/{type_id}]
 
@@ -644,8 +649,6 @@ Creation of a Goal Evaluation by a peer colleague into the selected goal.
             + self
                 + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
             + update
-                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string
-            + delete
                 + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
 
 
@@ -683,8 +686,6 @@ Update of a Goal Evaluation by a peer colleague into the selected goal.
             + self
                 + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
             + update
-                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string
-            + delete
                 + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
 
 ## Periods Collection [/periods]
