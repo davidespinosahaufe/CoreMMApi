@@ -782,7 +782,7 @@ Gets the period that is currently applied.
 
 
 
-## Period Evaluation [/positions/{position_id}/periods/{period_id}/evaluation]
+## Overall Evaluation [/positions/{position_id}/periods/{period_id}/evaluation]
 
 + Model (application/hal+json)
 
@@ -793,7 +793,7 @@ Gets the period that is currently applied.
 + Attributes (object)
 
 
-### Get Period Evaluation [GET]
+### Get Overall Evaluation [GET]
 
 Gets period evaluation pertaining to given position and period.
 
@@ -825,7 +825,7 @@ Gets period evaluation pertaining to given position and period.
                 + href: /employees/1 (string)
 
 
-### Get Period Evaluations List [GET /positions/{position_id}/evaluations]
+### Get Overall Evaluations List [GET /positions/{position_id}/evaluations]
 
 Returns all period evaluations pertaining to a given position (historical overview) in reverse historical order
 
@@ -1055,9 +1055,6 @@ Possible actions are:
 + status: Status of the evaluation for the position for a given period
 + _embedded
     + overall_evaluations (array[OverallEvaluationType])
-    + self_goal_evaluation (MainGoalEvaluationType)
-    + manager_goal_evaluation (MainGoalEvaluationType)
-    + appraisals (array[AppraisalType])
 
 ## OverallEvaluationType
 + id: 1 (string, required)
