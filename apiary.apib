@@ -364,7 +364,7 @@ Invite a peer colleague to create a goal evaluation into the selected goal  .
             + create_evaluation
                 + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
 
-## Goal Type [/goals/types/{type_id}]
+## Goal Type [/static_data/goals/types/{type_id}]
 
 Every goal has a related goal type.
 Every goal type has a scale of appraisal values.
@@ -379,26 +379,24 @@ Every goal type has a scale of possible categories values.
     + feedback = 6
     + potential = 7
 + name: Name of the goal type (string, required)
-+ appraisals (array[AppraisalType]): List of possibles values
++ appraisals (array[AppraisalValueType]): List of possibles values
 + categories (array): List of categories
     
 + Model (application/hal+json)
 
 + Parameters
-    + type_id: 1 (required, number) ... ID of the goal type in the form of an integer
+    + type_id: objective (required, string) ... ID of the goal type in the form of a string
 
 + Attributes (object)
-    + type: 2 (number, required)
     + name: objective (string, required)
     + _embedded
-        + appraisals (array[AppraisalType])
+        + appraisals (array[AppraisalValueType])
         + categories (array)
             + (object)
-                + id: 1 (number, required)
                 + value: 21005 (string, required)
     + _links
         + self
-            + href: /goals/types/1 (string)
+            + href: /goals/types/objective (string)
 
 
 
@@ -421,14 +419,11 @@ Gets Goal Type with given url parameter id.
 
 
 
-### List Goal Types [GET /goals/types{?position,period}]
+### List Goal Types [GET /static_data/goals/types]
 
 List a list of goal types appliable to a goal.
 If position or/and period parameters are sent, returned goal type are only appliable for that period and position.
 
-+ Parameters
-    + position (optional, number, `1`) ... Id of the position applicable to the returned goal types.
-    + period (optional, number, `1`) ... Id of the period applicable to the returned goal types
     
 + Request (application/json)
 
@@ -447,11 +442,7 @@ If position or/and period parameters are sent, returned goal type are only appli
     + Attributes
         + _links
             + self
-                + href: /goals/types?position=1&period=1 (string)
-            + next
-                + href: /goals/types?position=1&period=1?page=1 (string)
-
-
+                + href: /goals/types (string)
 
 
 
@@ -782,13 +773,14 @@ Gets the period that is currently applied.
 
 
 
-## Overall Evaluation [/positions/{position_id}/periods/{period_id}/evaluation]
+## Overall Evaluations [/positions/{position_id}/periods/{period_id}/evaluations/{evaluation_id}]
 
 + Model (application/hal+json)
 
 + Parameters
     + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
     + period_id (required, number, `1`) ... ID of the period in the form of an integer
+    + evaluation_id (required, number, `1`) ... ID of the evaluation in the form of an integer
     
 + Attributes (object)
 
@@ -812,11 +804,11 @@ Gets period evaluation pertaining to given position and period.
     + Body
 
 + Response 200 (application/hal+json)
-    + Attributes (PeriodEvaluationType)
+    + Attributes (OverallEvaluationType)
     + Attributes
         + _links
             + self
-                + href: /positions/1/periods/1/evaluation (string)
+                + href: /positions/1/periods/1/evaluations (string)
             + period
                 + href: /periods/1 (string)
             + position
@@ -825,7 +817,7 @@ Gets period evaluation pertaining to given position and period.
                 + href: /employees/1 (string)
 
 
-### Get Overall Evaluations List [GET /positions/{position_id}/evaluations]
+### Get Overall Evaluations List [GET /positions/{position_id}/periods/{period_id}/evaluations]
 
 Returns all period evaluations pertaining to a given position (historical overview) in reverse historical order
 
@@ -851,10 +843,10 @@ Returns all period evaluations pertaining to a given position (historical overvi
             + employee
                 + href: /employees/1 (string)
         + _embedded
-            + evaluation (PeriodEvaluationType)
+            + evaluations (array[OverallEvaluationType])
 
 
-### Get Period Evaluation Appraisals [GET /periods/appraisals]
+### Get Period Evaluation Appraisals [GET /static_data/periods/appraisals]
 
 Every overall evaluation has a scale of appraisal values.
 List all appraisals for a given goal type.
@@ -870,7 +862,7 @@ List all appraisals for a given goal type.
 + Response 200 (application/hal+json)
     + Body  
     + Attributes
-        + appraisals (array[AppraisalType])
+        + appraisals (array[AppraisalValueType])
         + _links
             + self
                 + href: /periods/appraisals (string)
@@ -879,7 +871,7 @@ List all appraisals for a given goal type.
 
 
 
-### Period Evaluation Status [/positions/{position_id}/periods/{period_id}/status]
+### Overall Evaluation Status [/positions/{position_id}/periods/{period_id}/status]
 
 Status of the Period Evaluation
 
@@ -911,7 +903,7 @@ As links:
     <!-- + last_modified: `2015-05-05T12:30:00` (required, string) -->
     
 
-### Get Period Evaluation Status [GET]
+### Get Overall Evaluation Status [GET]
 
 Every period has a status.
 Returns the status for a given period.
@@ -926,7 +918,7 @@ Returns the status for a given period.
             
 + Response 200 (application/hal+json)
     + Body  
-    + Attributes (Period Evaluation Status)
+    + Attributes (Overall Evaluation Status)
     + Attributes
         + _links
             + self
@@ -935,7 +927,7 @@ Returns the status for a given period.
                 + href:  /positions/1/periods/1/status (string)
 
 
-### Get current Period Evaluation Status [GET /positions/{position_id}/periods/current/status]
+### Get current Overall Evaluation Status [GET /positions/{position_id}/periods/current/status]
 
 Returns status from current period.
 
@@ -957,7 +949,7 @@ Possible status are:
             
 + Response 200 (application/hal+json)
     + Body  
-    + Attributes (Period Evaluation Status)
+    + Attributes (Overall Evaluation Status)
     + Attributes
         + _links
             + self
@@ -967,7 +959,7 @@ Possible status are:
 
 
 
-### Apply Period Evaluation Status Action [POST /positions/{position_id}/periods/{period_id}/actions]
+### Apply Overall Evaluation Status Action [POST /positions/{position_id}/periods/{period_id}/actions]
 
 This PUT request will aplly a period status action to the period.
 Retrieve it's possible values on [Get Period Evaluation Actions] .
@@ -981,9 +973,9 @@ Retrieve it's possible values on [Get Period Evaluation Actions] .
             X-FORWARDED-HOST: local-133.umantis.lan
     
     + Body
-    + Attributes (Period Evaluation Action)
+    + Attributes (Overall Evaluation Action)
 + Response 200 (application/hal+json)
-    + Attributes (Period Evaluation Status)
+    + Attributes (Overall Evaluation Status)
     + Attributes
         + _links
             + self
@@ -992,7 +984,7 @@ Retrieve it's possible values on [Get Period Evaluation Actions] .
                 + href: /positions/1/periods/1/status (string)
 
 
-### Get Period Evaluation Actions [GET /static_data/periods/actions]
+### Get Overall Evaluation Actions [GET /static_data/periods/actions]
 
 At every period evaluation, a list of actions can be applied in order to change it's status, as well as triggers some required actions.
 List all actions that can be applied to a Period Evaluation in order to change it status.
@@ -1019,12 +1011,12 @@ Possible actions are:
     + Body
     + Attributes
         + _embedded
-            + actions (array[Period Evaluation Action])
+            + actions (array[Overall Evaluation Action])
 
 
 # Data Structures
 
-## Period Evaluation Action
+## Overall Evaluation Action
 + action: AGREE_GOALS (string, required)
 
 ## GoalType
@@ -1061,7 +1053,7 @@ Possible actions are:
 + score_value: 0.8 (number, required)
 + comment: overall evaluation Comment (string, required)
 + answer: customer defined dynamic list value (string, required)
-+ evaluatorType (EvaluatorType)
++ evaluator_type (EvaluatorType)
 
 ## GoalEvaluationType
 + id: 1 (string, required)
@@ -1082,7 +1074,7 @@ Possible actions are:
         + href: /goals/1
 
 ## MainGoalEvaluationType
-+ evaluatorType (EvaluatorType)
++ evaluator_type (EvaluatorType)
 + _embedded
     + goalEvaluation (GoalEvaluationType)
 
@@ -1091,7 +1083,7 @@ Possible actions are:
     + EMPLOYEE
 
 ## AppraisalType
-+ evaluatorEmail
++ evaluator_email
 I actually have doubts about the Evaluator shall it be a link?
 Problems: if external person, the email is enough
 but if employee, who's details are not accessible to the current user then a link won't work...
@@ -1103,11 +1095,13 @@ but if employee, who's details are not accessible to the current user then a lin
     + evaluator
         + href: /persons/1
 
+## AppraisalValueType
++ value: AGood (string, required)
++ weight: 2 (number, required)
 
 ## Page
 + page: 0 (number, required)        
 + limit: 10 (number, required)
 
-## Category
-+ id: 1 (number, required)
+## CategoryType
 + value: 21005 (string, required)
