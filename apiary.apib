@@ -5,6 +5,78 @@ FORMAT: 1A
 Core MM is an API allowing consumers to access employee app features.
 
 
+
+## Persons [/persons]
+
+### Persons [/persons/{person_id}]
+
++ id (integer) - Id of the person
++ first name (string) - Name of the person
++ middle name (string) - Surname of the person
++ last name (string) - Surname of the person
++ photography (string) - Photography of the person in the form of a URL
+
++ Model (application/hal+json)
+
++ Parameters
+    + person_id (required, number, `1`) ... ID of the person in the form of an integer
++ Attributes (object)
+    + id: 1 (number, required)
+    + first_name: John (string, required)
+    + middle_name: Edward (string, required)
+    + last_name: Doe (string, required)
+    + photography: /images/1 (string)
+
+
+### GET Person [GET]
+
+A single Person is returned through a GET request where the person id is sent as an URL parameter.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/hal+json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+
+    + Headers
+    + Body
+    + Attributes (Persons)
+
+
+
+### GET Person Invitations [GET /persons/{person_id}/invitations]
+
+Returns all peer invitations that this person has.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/hal+json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+
+    
++ Response 200 (application/hal+json)
+
+    + Headers
+    + Body
+    + Attributes (object)
+        + _embedded
+            + invitations (array[InvitationType])
+        + page (Page)
+        + _links
+            + self
+                + href: /persons/65/invitations (string)
+            + next
+                + href: /persons/65/invitations?page=1 (string)
+    
+    
+
 ## Employees [/employees]
 
 ### Employee [/employees/{employee_id}]
@@ -31,6 +103,8 @@ Core MM is an API allowing consumers to access employee app features.
     + _embedded
         + positions (array[Position])
 
+
+
 ### GET Employee [GET]
 
 A single Employee is returned through a GET request where the employee id is sent as an URL parameter.
@@ -39,7 +113,7 @@ A single Employee is returned through a GET request where the employee id is sen
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -92,7 +166,7 @@ A single Position is returned through a GET request where the position id is sen
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -113,7 +187,7 @@ Returns list of position who direct reports given position id.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -171,6 +245,26 @@ There are 7 different types of goals, when a goal type "Objective" is returned, 
             + href: /goals/3 (required, string)
 
 
+### Get a goal [GET]
+
+A single Goal is returned through a GET request where the goal id is sent as an URL parameter.
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/hal+json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+            
++ Response 200 (application/hal+json)
+
+    + Headers
+    
+    + Body
+    + Attributes (Goal)
+
+
 ### Modify a goal [PUT]
 
 A  goal will be modified using this action.
@@ -181,7 +275,7 @@ Response then return specific header and body
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -196,25 +290,6 @@ Response then return specific header and body
     + Attributes (Goal)
     
 
-
-### Get a goal [GET]
-
-A single Goal is returned through a GET request where the goal id is sent as an URL parameter.
-
-+ Request (application/json)
-
-    + Headers
-    
-            Accept-Charset: application/json
-            X-AUTH-TOKEN: DEBUGTOKEN
-            X-FORWARDED-HOST: local-133.umantis.lan
-            
-+ Response 200 (application/hal+json)
-
-    + Headers
-    
-    + Body
-    + Attributes (Goal)
 
 
 
@@ -226,7 +301,7 @@ This DELETE request will delete the goal with the existing request parameter id.
             
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -259,7 +334,7 @@ Response then return specific header and body
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -268,6 +343,7 @@ Response then return specific header and body
 
 + Response 201 (application/hal+json)
     + Attributes (Goal)
+
 
 
 ### Get all goals [GET /position/{position_id}/goals]
@@ -282,7 +358,7 @@ Only goals for period set as CURRENT will be returned.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -300,6 +376,7 @@ Only goals for period set as CURRENT will be returned.
                 + href: /position/3/goals (string)
             + next
                 + href: /position/3/goals?page=1 (string)
+
 
 
 ### Get all goals from a period [GET /position/{position_id}/period/{period_id}/goals]
@@ -314,7 +391,7 @@ All Goals from given position and period are returned through a GET request wher
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -335,7 +412,7 @@ All Goals from given position and period are returned through a GET request wher
 
 
 
-### Invite Peer [POST /positions/{position_id}/goals/{goal_id}/invitations]
+### Invite Peer to Goal [POST /positions/{position_id}/goals/{goal_id}/invitations]
 
 Invite a peer colleague to create a goal evaluation into the selected goal  .
 
@@ -347,7 +424,7 @@ Invite a peer colleague to create a goal evaluation into the selected goal  .
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -359,10 +436,44 @@ Invite a peer colleague to create a goal evaluation into the selected goal  .
 + Response 201 (application/hal+json)
     
     + Body
-    + Attributes
+    + Attributes (InvitationType)
+
+
+
+### Get Goal Peer Invitations [GET /positions/{position_id}/goals/{goal_id}/invitations{?status}]
+
+Returns all existing peer invitations to the selected goal
+
++ Parameters
+    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
+    + status (optional, string, `started`) ... Query filter based based in the status of the invitation
+        + Values
+            + `started`
+            + `invited`
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/hal+json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+
+
++ Response 200 (application/hal+json)
+
+    + Headers
+    + Body
+    + Attributes (object)
+        + _embedded
+            + invitations (array[InvitationType])
+        + page (Page)
         + _links
-            + create_evaluation
-                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
+            + self
+                + href: /positions/3/goals/43/invitations (string)
+            + next
+                + href: /positions/3/goals/43/invitations?page=1 (string)
 
 ## Goal Type [/static_data/goals/types/{type_id}]
 
@@ -408,7 +519,7 @@ Gets Goal Type with given url parameter id.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -429,7 +540,7 @@ If position or/and period parameters are sent, returned goal type are only appli
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -460,7 +571,7 @@ As links:
 + goalType: Id of the related goal type (string, required)
 
 
-+ Model (application/hal+json)
++ Model (application/json)
 
 + Parameters
     + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
@@ -480,7 +591,7 @@ Creation of a Goal Evaluation using a POST request.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -502,7 +613,7 @@ Creation of a Goal Evaluation using a POST request.
             + self
                 + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
             + update
-                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string
+                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
             + delete
                 + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
 
@@ -520,7 +631,7 @@ Gets evaluation with given url id's.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -560,7 +671,7 @@ This PUT request will modify the existing Goal Evaluation with given url paramet
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -599,85 +710,14 @@ This DELETE request will delete the Goal Evaluation with the existing request id
             
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
    
 + Response 204
 
 
-### Create Peer Goal Evaluation [POST /positions/{position_id}/goals/{goal_id}/invitations/{evaluation_id}]
 
-Creation of a Goal Evaluation by a peer colleague into the selected goal.
-
-+ Parameters
-    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
-    + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
-    + evaluation_id (required, number, `1-2-3-4-2`) ... ID of the goal evaluation in the form of an string
-
-+ Request (application/json)
-
-    + Headers
-    
-            Accept-Charset: application/json
-            X-AUTH-TOKEN: DEBUGTOKEN
-            X-FORWARDED-HOST: local-133.umantis.lan
-    
-    + Body
-    + Attributes (Goal Evaluation)
-
-+ Response 201 (application/hal+json)
-
-    + Attributes
-        + id: 1-2-3-4-2 (string, required)
-    + Attributes (Goal Evaluation)
-    + Attributes
-        + _links
-            + period
-                + href: /periods/3
-            + goal_type
-                + href: /goals/types/3
-            + self
-                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
-            + update
-                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
-
-
-### Update Peer Goal Evaluation [PUT /positions/{position_id}/goals/{goal_id}/invitations/{evaluation_id}]
-
-Update of a Goal Evaluation by a peer colleague into the selected goal.
-
-+ Parameters
-    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
-    + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
-    + evaluation_id (required, number, `1-2-3-4-2`) ... ID of the goal evaluation in the form of an string
-
-+ Request (application/json)
-
-    + Headers
-    
-            Accept-Charset: application/json
-            X-AUTH-TOKEN: DEBUGTOKEN
-            X-FORWARDED-HOST: local-133.umantis.lan
-    
-    + Body
-    + Attributes (Goal Evaluation)
-
-+ Response 201 (application/hal+json)
-
-    + Attributes
-        + id: 1-2-3-4-2 (string, required)
-    + Attributes (Goal Evaluation)
-    + Attributes
-        + _links
-            + period
-                + href: /periods/3
-            + goal_type
-                + href: /goals/types/3
-            + self
-                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
-            + update
-                + href: /positions/1/goals/1-2-3-4/invitations/1-2-3-4-2 (string)
 
 ## Periods Collection [/periods]
 
@@ -716,7 +756,7 @@ Gets period identified by url id parameter.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -734,7 +774,7 @@ Gets the period that is currently applied.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -754,7 +794,7 @@ Gets the period that is currently applied.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -797,7 +837,7 @@ Gets period evaluation pertaining to given position and period.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -825,7 +865,7 @@ Returns all period evaluations pertaining to a given position (historical overvi
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -855,7 +895,7 @@ List all appraisals for a given goal type.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -900,7 +940,6 @@ As links:
         + GOALS_CONFIRMED
         + EVALUATION_AGREED
         + EVALUATION_CONFIRMED
-    <!-- + last_modified: `2015-05-05T12:30:00` (required, string) -->
     
 
 ### Get Overall Evaluation Status [GET]
@@ -912,7 +951,7 @@ Returns the status for a given period.
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -943,7 +982,7 @@ Possible status are:
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -968,7 +1007,7 @@ Retrieve it's possible values on [Get Period Evaluation Actions] .
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
     
@@ -998,12 +1037,11 @@ Possible actions are:
 + REOPEN_EVALUATION: Current Period Evaluation gets reopened.
 
 
-
 + Request (application/json)
 
     + Headers
     
-            Accept-Charset: application/json
+            Accept-Charset: application/hal+json
             X-AUTH-TOKEN: DEBUGTOKEN
             X-FORWARDED-HOST: local-133.umantis.lan
             
@@ -1105,3 +1143,15 @@ but if employee, who's details are not accessible to the current user then a lin
 
 ## CategoryType
 + value: 21005 (string, required)
+
+## InvitationType
++ status (required, enum)
+    + INVITED
+    + STARTED
++ creation_date: `2015-05-05T12:30:00` (optional, string)
++ modification_date: `2015-05-05T12:30:00` (optional, string)
++ _links
+    + peer_evaluation
+        + href: /positions/230/goals/434/evaluations/54
+    + peer_person 
+        + href: /persons/32
