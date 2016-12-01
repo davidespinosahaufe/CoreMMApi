@@ -412,12 +412,13 @@ All Goals from given position and period are returned through a GET request wher
 
 
 
-### Invite Peer to Goal [POST /positions/{position_id}/goals/{goal_id}/invitations]
+### Invite Peer to Goal [POST /positions/{position_id}/periods/{period_id}/goals/{goal_id}/invitations]
 
 Invite a peer colleague to create a goal evaluation into the selected goal  .
 
 + Parameters
     + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
+    + period_id (required, number, `1`) ... ID of the period in the form of a number
     + goal_id (required, string, `1-2-3`) ... ID of the goal in the form of an string
 
 + Request (application/json)
@@ -1138,7 +1139,7 @@ but if employee, who's details are not accessible to the current user then a lin
 + weight: 2 (number, required)
 
 ## Page
-+ page: 0 (number, required)        
++ offset: 0 (number, required)        
 + limit: 10 (number, required)
 
 ## CategoryType
