@@ -821,18 +821,14 @@ Gets the period that is currently applied.
 + Parameters
     + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
     + period_id (required, number, `1`) ... ID of the period in the form of an integer
-    + evaluation_id (required, number, `1`) ... ID of the evaluation in the form of an integer
+    + evaluation_id (required, string, `2-1-21000000000049-336`) ... ID of the evaluation in the form of an string
     
 + Attributes (object)
 
 
-### Get Overall Evaluation [GET]
+### Get Single Overall Evaluation [GET /positions/{position_id}/periods/{period_id}/evaluations/{evaluation_id}]
 
 Gets period evaluation pertaining to given position and period.
-
-+ Parameters
-    + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
-    + period_id (required, number, `1`) ... ID of the period in the form of an integer
 
 + Request (application/json)
 
@@ -854,11 +850,8 @@ Gets period evaluation pertaining to given position and period.
                 + href: /periods/1 (string)
             + position
                 + href: /positions/1 (string)
-            + employee
-                + href: /employees/1 (string)
 
-
-### Get Overall Evaluations List [GET /positions/{position_id}/periods/{period_id}/evaluations]
+### Get Overall Evaluations For Period [GET /positions/{position_id}/periods/{period_id}/evaluations]
 
 Returns all period evaluations pertaining to a given position (historical overview) in reverse historical order
 
@@ -873,18 +866,39 @@ Returns all period evaluations pertaining to a given position (historical overvi
     + Body
 
 + Response 200 (application/hal+json)
+    + Attributes (PeriodEvaluationType)
     + Attributes
         + _links
             + self
-                + href: /positions/1/evaluations (string)
+                + href: /positions/1/periods/1/evaluations/ (string)
             + period
                 + href: /periods/1 (string)
             + position
                 + href: /positions/1 (string)
-            + employee
-                + href: /employees/1 (string)
+
+
+### Get Overall Evaluations List [GET /positions/{position_id}/evaluations]
+
+Returns all period evaluations pertaining to a given position (historical overview) in reverse historical order
+
++ Request (application/json)
+
+    + Headers
+    
+            Accept-Charset: application/hal+json
+            X-AUTH-TOKEN: DEBUGTOKEN
+            X-FORWARDED-HOST: local-133.umantis.lan
+    
+    + Body
+
++ Response 200 (application/hal+json)
+    + Attributes (Page)
+    + Attributes
+        + _links
+            + self
+                + href: /positions/1/evaluations (string)
         + _embedded
-            + evaluations (array[OverallEvaluationType])
+            + evaluations (array[PeriodEvaluationType])
 
 
 ### Get Period Evaluation Appraisals [GET /static_data/periods/appraisals]
@@ -1084,6 +1098,8 @@ Possible actions are:
 
 ## PeriodEvaluationType
 + status: Status of the evaluation for the position for a given period
++ period_id: 1 (number, required)
++ position_id: 1 (number, required)
 + _embedded
     + overall_evaluations (array[OverallEvaluationType])
 
