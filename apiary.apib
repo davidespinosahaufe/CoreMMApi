@@ -603,7 +603,7 @@ Creation of a Goal Evaluation using a POST request.
 
 + Response 201 (application/hal+json)
     + Attributes
-        + id: 1-2-3-4-2 (string, required)
+        + id: `1-2-3-4-2` (string, required)
     + Attributes (Goal Evaluation)
     + Attributes
         + _links
@@ -614,13 +614,13 @@ Creation of a Goal Evaluation using a POST request.
             + goal_type
                 + href: /goals/types/3
             + self
-                + href: /positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-2 (string)
+                + href: `/positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2` (string)
             + update
-                + href: /positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2 (string)
+                + href: `/positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2` (string)
             + delete
-                + href: /positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2 (string)
+                + href: `/positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2` (string)
             + goal
-                + href: /positions/1/goals/1797-21000000000296-101 (string)
+                + href: `/positions/1/goals/1797-21000000000296-101` (string)
 
 
 ### Get Goal Evaluation [GET /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
@@ -644,7 +644,7 @@ Gets evaluation with given url id's.
 
 + Response 200 (application/hal+json)
     + Attributes
-        + id: 1-2-3-4-2 (string, required)
+        + id: `1-2-3-4-2` (string, required)
     + Attributes (Goal Evaluation)
     + Attributes
         + _links
@@ -655,11 +655,11 @@ Gets evaluation with given url id's.
             + goal_type
                 + href: /goals/types/3
             + self
-                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+                + href: `/positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2` (string)
             + update
-                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+                + href: `/positions/1/goals/1797-21000000000296-101/1-2-3-4-2` (string)
             + delete
-                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+                + href: `/positions/1/goals/1797-21000000000296-101/1-2-3-4-2` (string)
 
 
 
@@ -684,7 +684,7 @@ This PUT request will modify the existing Goal Evaluation with given url paramet
 
 + Response 200 (application/hal+json)
     + Attributes
-        + id: 1-2-3-4-2 (string, required)
+        + id: `1-2-3-4-2` (string, required)
     + Attributes (Goal Evaluation)
     + Attributes
         + _links
@@ -695,11 +695,11 @@ This PUT request will modify the existing Goal Evaluation with given url paramet
             + goal_type
                 + href:  /goals/types/3
             + self
-                + href:  /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+                + href:  `/positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2` (string)
             + update
-                + href:  /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string
+                + href:  `/positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2` (string)
             + delete
-                + href:  /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+                + href:  `/positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2` (string)
 
 
 ### Delete a Goal Evaluation [DELETE /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
