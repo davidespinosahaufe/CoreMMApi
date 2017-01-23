@@ -483,13 +483,13 @@ Every goal type has a scale of appraisal values.
 Every goal type has a scale of possible categories values.
 
 + type_id (number) - Id of type of goal
-    + objective = 1
-    + task = 2
-    + skill = 3
-    + development = 4
-    + behavior = 5
-    + feedback = 6
-    + potential = 7
+    + objective
+    + task
+    + skill
+    + development
+    + behavior
+    + feedback
+    + potential
 + name: Name of the goal type (string, required)
 + appraisals (array[AppraisalValueType]): List of possibles values
 + categories (array): List of categories
@@ -570,18 +570,20 @@ As links:
 + evaluator: Position Id of the creator of the Evalution (string, required)
 + period: Id of the period where the evaluation belongs (string, required)
 + goalType: Id of the related goal type (string, required)
++ goal: Goal where the evaluation is being created (string, required)
 
 
 + Model (application/json)
 
 + Parameters
     + position_id (required, number, `1`) ... ID of the position who owns the goal that receives the evaluation
-    + goal_id (required, string, `1-2-3-4`) ... ID of the goal in the form of string
+    + goal_id (required, string, `1797-21000000000296-101`) ... ID of the goal in the form of string
     
 + Attributes (object)
     + creator_id: 123 (string, optional)
-    + value: AA (string, optional)  
+    + value: 1000954 (string, optional)  
     + comment: This is the comment for a goal evaluation (string, optional)
+    + goal_id: Id of the goal where the evaluation is being created (string, required)
 
 
 ### Create Goal Evaluation [POST]
@@ -612,11 +614,13 @@ Creation of a Goal Evaluation using a POST request.
             + goal_type
                 + href: /goals/types/3
             + self
-                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+                + href: /positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2 (string)
             + update
-                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+                + href: /positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2 (string)
             + delete
-                + href: /positions/1/goals/1-2-3-4/evaluations/1-2-3-4-2 (string)
+                + href: /positions/1/goals/1797-21000000000296-101/evaluations/1-2-3-4-2 (string)
+            + goal
+                + href: /positions/1/goals/1797-21000000000296-101 (string)
 
 
 ### Get Goal Evaluation [GET /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
@@ -1151,8 +1155,8 @@ but if employee, who's details are not accessible to the current user then a lin
         + href: /persons/1
 
 ## AppraisalValueType
-+ value: AGood (string, required)
-+ weight: 2 (number, required)
++ value: 1000954 (string, required)
++ list: 68 (string, required)
 
 ## Page
 + offset: 0 (number, required)        
@@ -1160,6 +1164,7 @@ but if employee, who's details are not accessible to the current user then a lin
 
 ## CategoryType
 + value: 21005 (string, required)
++ list: 1010 (string, required)
 
 ## InvitationType
 + status (required, enum)
@@ -1169,6 +1174,10 @@ but if employee, who's details are not accessible to the current user then a lin
 + modification_date: `2015-05-05T12:30:00` (optional, string)
 + _links
     + peer_evaluation
-        + href: /positions/230/goals/434/evaluations/54
+        + href: /positions/230/goals/434/evaluations
     + peer_person 
         + href: /persons/32
+    + goal_recipient
+        + href: /positions/34
+    + goal
+        + href: /positions/34/periods/42/goals/78
