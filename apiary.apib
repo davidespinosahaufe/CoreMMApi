@@ -581,11 +581,7 @@ If position or/and period parameters are sent, returned goal type are only appli
 + appraisal: Value of the evaluation (string)
 + comment: This is the comment for a goal evaluation (string)
 
-As links:
-
-+ evaluator: Position Id of the creator of the Evalution (string, required)
-+ period: Id of the period where the evaluation belongs (string, required)
-+ goalType: Id of the related goal type (string, required)
+As link:
 + goal: Goal where the evaluation is being created (string, required)
 
 
@@ -598,11 +594,11 @@ As links:
 + Attributes (object)
     + id: MAIN-2-3742-21000000001417-585 (string, required)
     + score_value: 10 (string, nullable)
-    + goal_id: 3742-21000000001417-585 (string, required)
+    + goal_id: 3742-21000000001417-585 (string, nullable)
     + evaluator_type: MANAGER (string, required)
     + comment: This is the comment for a goal evaluation (string, optional)
     + answer (CategoryType, required)
-    + type: MAIN_EVALUATION (string, required)
+    + type: MAIN_EVALUATION (string, nullable)
     + appraisal: 1000954 (string, nullable)
     + _links
         + self
@@ -616,7 +612,7 @@ As links:
 
 Creation of a Goal Evaluation using a POST request.
 
-+ Request (application/hal+json)
++ Request (application/json)
 
     + Headers
 
