@@ -3,7 +3,7 @@ FORMAT: 1A
 # Core MM API
 
 Core MM is an API allowing consumers to access employee app features.
-Gergely hello
+
 
 
 ## Persons [/persons]
@@ -317,7 +317,7 @@ There are 7 different types of goals, when a goal type "Objective" is returned, 
 A single Goal is returned through a GET request where the goal id is sent as an URL parameter.
 
 + Parameters
-    + goal_id (required, string, `1147-21000000000352-1750`) ... ID of the goal in the form of a string
+    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
 
 + Request (application/hal+json)
 
@@ -374,7 +374,7 @@ This action takes a JSON payload as a part of the request.
 Response then return specific header and body
 
 + Parameters
-    + goal_id (required, string, `1147-21000000000352-1750`) ... ID of the goal in the form of a string
+    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
 
 + Request (application/hal+json)
 
@@ -404,7 +404,7 @@ Response then return specific header and body
 This DELETE request will delete the goal with the existing request parameter id.
 
 + Parameters
-    + goal_id (required, string, `1147-21000000000352-1750`) ... ID of the goal in the form of a string
+    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
     + period (required, number, `103`)
     + recipient (required, number, `132`)
     + type (required, number, `2`))
@@ -475,7 +475,7 @@ All Goals from given position and period are returned through a GET request wher
 Invite a peer colleague to create a goal evaluation into the selected goal  .
 
 + Parameters
-    + goal_id (required, string, `1147-21000000000352-1750`) ... ID of the goal in the form of a string
+    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
 
 + Request (application/hal+json)
 
@@ -588,14 +588,14 @@ As link:
 + Model (application/hal+json)
 
 + Parameters
-    + position_id (required, number, `59`) ... ID of the position who owns the goal that receives the evaluation
-    + goal_id (required, string, `3742-21000000001417-585`) ... ID of the goal in the form of string
+    + position_id (required, number, `132`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of string
 
 + Attributes (object)
-    + id: MAIN-2-3742-21000000001417-585 (string, required)
+    + goal_evaluation_id: `MAIN-2-2825-21000000001525-1750` (string, required)
     + score_value: 10 (string, nullable)
-    + goal_id: 3742-21000000001417-585 (string, nullable)
-    + evaluator_type: MANAGER (string, required)
+    + goal_id: `2825-21000000001525-1750` (string, nullable)
+    + evaluator_type: MANAGER (string, nullable)
     + comment: This is the comment for a goal evaluation (string, optional)
     + answer (CategoryType, required)
     + type: MAIN_EVALUATION (string, nullable)
@@ -635,7 +635,7 @@ Creation of a Goal Evaluation using a POST request.
 Gets evaluation with given url id's.
 
 + Parameters
-    + evaluation_id (required, string, `MAIN-2-3742-21000000001417-585`) ... ID of the goal evaluation in the form of an string
+    + evaluation_id (required, string, `MAIN-2-2825-21000000001525-1750`) ... ID of the goal evaluation in the form of an string
 
 + Request (application/hal+json)
 
@@ -657,7 +657,7 @@ Gets evaluation with given url id's.
 This PUT request will modify the existing Goal Evaluation with given url parameter ids.
 
 + Parameters
-    + evaluation_id (required, string, `MAIN-2-3742-21000000001417-585`) ... ID of the goal evaluation in the form of an string
+    + evaluation_id (required, string, `MAIN-2-2825-21000000001525-1750`) ... ID of the goal evaluation in the form of an string
 
 + Request (application/hal+json)
 
@@ -668,29 +668,14 @@ This PUT request will modify the existing Goal Evaluation with given url paramet
             X-FORWARDED-HOST: local-133.umantis.lan
 
     + Body
+    + Attributes (object)
+        + appraisal: 63002 (string, optional)
+        + comment: Great performance (string, required)
 
 + Response 200 (application/hal+json;charset=UTF-8)
     + Attributes (object)
         + appraisal: 63002 (string, optional)
         + comment: Great performance (string, required)
-
-
-### Delete a Goal Evaluation [DELETE /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
-
-This DELETE request will delete the Goal Evaluation with the existing request id parameters.
-
-+ Parameters
-     + evaluation_id (required, string, `MAIN-2-3742-21000000001417-585`) ... ID of the goal evaluation in the form of an string
-
-+ Request (application/hal+json)
-
-    + Headers
-
-            Accept-Charset: utf-8
-            X-AUTH-TOKEN: {{token}}
-            X-FORWARDED-HOST: local-133.umantis.lan
-
-+ Response 204
 
 
 
@@ -712,7 +697,7 @@ This DELETE request will delete the Goal Evaluation with the existing request id
 + score_value: 0.8 (number, required)
 + comment: overall evaluation Comment (string, required)
 + answer: customer defined dynamic list value (string, required)
-+ evaluator_type (EvaluatorType)
++ evaluator_type (EvaluatorType, nullable)
 
 ## GoalEvaluationType
 + id: 1 (string, required)
@@ -733,7 +718,7 @@ This DELETE request will delete the Goal Evaluation with the existing request id
         + href: /goals/1
 
 ## MainGoalEvaluationType
-+ evaluator_type (EvaluatorType)
++ evaluator_type (EvaluatorType, nullable)
 + _embedded
     + goalEvaluation (GoalEvaluationType)
 
