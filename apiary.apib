@@ -399,12 +399,15 @@ Response then return specific header and body
 
 
 
-### Delete a goal [DELETE /positions/{position_id}/periods/{period_id}/goals/{goal_id}]
+### Delete a goal [DELETE /positions/{position_id}/periods/{period_id}/goals/{goal_id}{?period,recipient,type}]
 
 This DELETE request will delete the goal with the existing request parameter id.
 
 + Parameters
     + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
+    + period (required, number, `103`)
+    + recipient (required, number, `132`)
+    + type (required, number, `2`))
 
 + Request (application/hal+json)
 
@@ -766,12 +769,11 @@ but if employee, who's details are not accessible to the current user then a lin
     + STARTED
 + creation_date: `2015-05-05T12:30:00` (optional, string)
 + modification_date: `2015-05-05T12:30:00` (optional, string)
++ evaluated: `true` (required, boolean)
 + _links
-    + peer_evaluation
-        + href: /positions/230/goals/434/evaluations
-    + peer_person 
-        + href: /persons/32
     + goal_recipient
         + href: /positions/34
     + goal
+        + href: /positions/230/goals/434/evaluations
+    + peer_evaluation
         + href: /positions/34/periods/42/goals/78
