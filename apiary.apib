@@ -95,7 +95,7 @@ Returns all peer invitations that this person has.
         + value: 21001 (string, required)
     + _links (required)
         + self (required)
-            + href: http://local-133.umantis.lan/rest/employees/563 (string, required)
+            + href: `http://local-133.umantis.lan/rest/employees/563` (string, required)
     + _embedded (required)
         + positions (array[Position], required)
 
@@ -181,9 +181,9 @@ Gets a position given it's id.
     + description: Developer of the Core MM API (string, required)
     + _links (required)
         + self (required)
-            + href: http://local-133.umantis.lan/rest/positions/132 (string, required)
+            + href: `http://local-133.umantis.lan/rest/positions/132` (string, required)
         + employee (required)
-            + href: http://local-133.umantis.lan/rest/employees/994 (string, required)
+            + href: `http://local-133.umantis.lan/rest/employees/994` (string, required)
 
 
 ### GET Position [GET]
@@ -346,7 +346,7 @@ Response then return specific header and body
 + creator (string) - Position id of the Goal creator
 + category (string) - Category of the created Goal
 
-+ Request (application/hal+json)
++ Request (application/json)
 
     + Headers
 
@@ -355,12 +355,13 @@ Response then return specific header and body
             X-FORWARDED-HOST: local-133.umantis.lan
 
     + Body
-    + Attributes (object)
-        + title: Modified title (string, optional)
-        + description: Modified description (string, optional)
-        + type: TASK (string, optional)
-        + category: 210486 (string, optional)
 
+            {
+                "title": "Title of the goal",
+                "description": "Description of the goal",
+                "type": "TASK",
+                "category": "210486"
+            }
 
 + Response 201 (application/hal+json;charset=UTF-8)
     + Attributes (Goal)
@@ -376,7 +377,7 @@ Response then return specific header and body
 + Parameters
     + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
 
-+ Request (application/hal+json)
++ Request (application/json)
 
     + Headers
 
@@ -385,11 +386,13 @@ Response then return specific header and body
             X-FORWARDED-HOST: local-133.umantis.lan
 
     + Body
-    + Attributes (object)
-        + title: Modified title (string, optional)
-        + description: Modified description (string, optional)
-        + type: TASK (string, optional)
-        + category: 210486 (string, optional)
+
+            {
+                "title": "Updated title",
+                "description": "Updated description",
+                "type": "TASK",
+                "category": "210486"
+            }
 
 + Response 200 (application/hal+json;charset=UTF-8)
 
@@ -474,16 +477,18 @@ Invite a peer colleague to create a goal evaluation into the selected goal  .
 + Parameters
     + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
 
-+ Request (application/hal+json)
++ Request (application/json)
 
     + Headers
 
             Accept-Charset: utf-8
             X-FORWARDED-HOST: local-133.umantis.lan
     + Body
-    + Attributes (object)
-        + person_id: 563 (number, optional)
-        + email: aria.stark@starks.umantis (string, optional)
+
+            {
+                "person_id": 563,
+                "email": "aria.stark@starks.umantis"
+            }
 
 
 + Response 202
@@ -507,7 +512,7 @@ Every goal type has a scale of possible categories values.
 + appraisals (array[AppraisalValueType]): List of possibles values
 + categories (array): List of categories
 
-+ Model (application/hal+json)
++ Model (application/json)
 
 + Attributes (object)
     + name: objective (string, required)
@@ -618,9 +623,11 @@ Creation of a Goal Evaluation using a POST request.
             X-FORWARDED-HOST: local-133.umantis.lan
 
     + Body
-    + Attributes (object)
-        + appraisal: 63002 (string, optional)
-        + comment: Great performance (string, required)
+
+            {
+                "appraisal": "63002",
+                "comment": "Great performance"
+            }
 
 
 + Response 201 (application/hal+json;charset=UTF-8)
@@ -665,9 +672,11 @@ This PUT request will modify the existing Goal Evaluation with given url paramet
             X-FORWARDED-HOST: local-133.umantis.lan
 
     + Body
-    + Attributes (object)
-        + appraisal: 63002 (string, optional)
-        + comment: Great performance (string, required)
+
+            {
+                "appraisal": "63002",
+                "comment": "Great performance"
+            }
 
 + Response 200 (application/hal+json;charset=UTF-8)
     + Attributes (object)
@@ -772,8 +781,8 @@ but if employee, who's details are not accessible to the current user then a lin
 + evaluator_email: `rade.kolbas@umantis.com` (optional, string)
 + _links
     + goal_recipient
-        + href: /positions/41/public_info
+        + href: `/positions/41/public_info`
     + goal
-        + href: /positions/41/periods/101/goals/878-21000000000165-316
+        + href: `/positions/41/periods/101/goals/878-21000000000165-316`
     + peer_evaluation
-        + href: /positions/41/goals/878-21000000000165-316/evaluations/TPA-5-878-21000000000165-316
+        + href: `/positions/41/goals/878-21000000000165-316/evaluations/TPA-5-878-21000000000165-316`
