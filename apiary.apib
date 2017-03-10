@@ -6,9 +6,7 @@ Core MM is an API allowing consumers to access employee app features.
 
 
 
-## Persons [/persons]
-
-### Persons [/persons/{person_id}]
+## Persons [/persons/{person_id}]
 
 + id (integer) - Id of the person
 + name (string) - Name of the person
@@ -23,6 +21,7 @@ Core MM is an API allowing consumers to access employee app features.
     + name: Tom (string, required)
     + surname: Coleman (string, required)
     + title: Analyst (string, nullable)
+
 
 ### GET Person [GET]
 
@@ -70,9 +69,8 @@ Returns all peer invitations that this person has.
         + _links (PaginationLinks)
 
 
-## Employees [/employees]
 
-### Employee [/employees/{employee_id}]
+## Employee [/employees/{employee_id}]
 
 + id (integer) - Id of the employee
 + name (string) - Name of the employee
@@ -157,13 +155,11 @@ Get the public data set information related to an employee.
         + _links (PaginationLinks, required)
 
 
-## Positions [/positions]
+
+## Position [/positions/{position_id}]
 
 Every employee has at least a position.
 A position identifies an occupancy into the company.
-
-
-### Position [/positions/{position_id}]
 
 Gets a position given it's id.
 
@@ -264,7 +260,107 @@ A single Position Public Information is returned through a GET request where the
     + Attributes (Position Public Information)
 
 
-## Goal [/positions/{position_id}/periods/{period_id}/goals]
+
+## Period [/periods/{id}]
+
+Periods define timeline stages in any corporative element.
+
++ id: Id of the period in the numeric format (number, required)
++ name: Name of the period(string, required)
++ order: Sequence order of the period  (number, required)
++ closedForEmployeeReview: Flag that allows employee to interact with the goals included in the period.  (boolean, required)
++ closedForEvaluation: Flag that forbids further evaluations in the period. (boolean, required)
+
++ Parameters
+    + id (required, number, `103`) ... ID of the period in the form of an integer
+
++ Model (application/hal+json)
+
++ Attributes (object)
+    + id: 12 (number, required)
+    + name: Q3-2015 (string, required)
+    + order: 5  (number, required)
+    + closed_for_employee_review: true (boolean, required)
+    + closed_for_evaluation: false (boolean, required)
+    + _links
+        + self
+            + href: /periods/12 (string)
+
+
+
+### Get period [GET]
+
+Gets period identified by url id parameter.
+
++ Request (application/json)
+
+    + Headers
+
+            Accept-Charset: utf-8
+            X-AUTH-TOKEN: {{token}}
+            X-FORWARDED-HOST: local-133.umantis.lan
+
++ Response 200 (application/hal+json;charset=UTF-8)
+    + Body
+    + Attributes (Period)
+
+
+
+## Current Period [/periods/current]
+
+Current period is the one appliable in most of current actions in the API.
+
+
+### Get Current Period [GET]
+
+Gets the period that is currently applied.
+
++ Request (application/json)
+
+  + Headers
+
+          Accept-Charset: utf-8
+          X-AUTH-TOKEN: {{token}}
+          X-FORWARDED-HOST: local-133.umantis.lan
+
++ Response 200 (application/hal+json;charset=UTF-8)
+    + Body
+    + Attributes (Period)
+    + Attributes
+        + _embedded
+            + next (Period)
+
+
+## Periods Collection [/periods]
+
+### Get all periods [GET]
+
+Get a list of all periods.
+
++ Request (application/json)
+
+    + Headers
+
+          Accept-Charset: utf-8
+          X-AUTH-TOKEN: {{token}}
+          X-FORWARDED-HOST: local-133.umantis.lan
+
++ Response 200 (application/hal+json;charset=UTF-8)
+    + Body
+    + Attributes (object)
+        + _embedded
+            + periods (array[Period])
+        + page (Page)
+    + Attributes
+        + _links
+            + self
+                + href: /periods (string)
+            + next
+                + href: /periods?page=1 (string)
+
+
+
+## Goal [/positions/{position_id}/periods/{period_id}/goals/{goal_id}]
 
 There are 7 different types of goals, when a goal type "Objective" is returned, additional links for parent goal and company goal will be returned.
 
@@ -287,6 +383,7 @@ There are 7 different types of goals, when a goal type "Objective" is returned, 
 + Parameters
     + position_id (required, number, `132`) ... ID of position who owns the goal in the form of an integer
     + period_id (required, number, `103`) ... ID of the period when the goal is included in the form of an integer
+    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
 
 + Attributes (object)
     + title: Title for demo (string, required)
@@ -312,12 +409,9 @@ There are 7 different types of goals, when a goal type "Objective" is returned, 
             + href: `http://local-133.umantis.lan/rest/positions/132/periods/103/goals/1147-21000000000352-1750` (string, optional)
 
 
-### Get a goal [GET /positions/{position_id}/periods/{period_id}/goals/{goal_id}]
+### Get a goal [GET]
 
 A single Goal is returned through a GET request where the goal id is sent as an URL parameter.
-
-+ Parameters
-    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
 
 + Request (application/hal+json)
 
@@ -332,6 +426,59 @@ A single Goal is returned through a GET request where the goal id is sent as an 
     + Headers
     + Body
     + Attributes (Goal)
+
+
+### Modify a goal [PUT]
+
+A  goal will be modified using this action.
+This action takes a JSON payload as a part of the request.
+Response then return specific header and body
+
++ Request (application/json)
+
+    + Headers
+
+            Accept-Charset: utf-8
+            X-AUTH-TOKEN: {{token}}
+            X-FORWARDED-HOST: local-133.umantis.lan
+
+    + Body
+
+            {
+                "title": "Updated title",
+                "description": "Updated description",
+                "type": "TASK",
+                "category": "210486"
+            }
+
++ Response 200 (application/hal+json;charset=UTF-8)
+
+    + Headers
+    + Body
+    + Attributes (Goal)
+
+
+
+### Delete a goal [DELETE]
+
+This DELETE request will delete the goal with the existing request parameter id.
+
++ Request (application/hal+json)
+
+    + Headers
+
+            Accept-Charset: utf-8
+            X-AUTH-TOKEN: {{token}}
+            X-FORWARDED-HOST: local-133.umantis.lan
+
++ Response 204
+
+
+## Goals Collection [/positions/{position_id}/periods/{period_id}/goals]
+
++ Parameters
+    + position_id (required, number, `132`) ... ID of position who owns the goal in the form of an integer
+    + period_id (required, number, `103`) ... ID of the period when the goal is included in the form of an integer
 
 
 ### Create a new goal [POST]
@@ -367,59 +514,6 @@ Response then return specific header and body
     + Attributes (Goal)
 
 
-
-### Modify a goal [PUT /positions/{position_id}/periods/{period_id}/goals/{goal_id}]
-
-A  goal will be modified using this action.
-This action takes a JSON payload as a part of the request.
-Response then return specific header and body
-
-+ Parameters
-    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
-
-+ Request (application/json)
-
-    + Headers
-
-            Accept-Charset: utf-8
-            X-AUTH-TOKEN: {{token}}
-            X-FORWARDED-HOST: local-133.umantis.lan
-
-    + Body
-
-            {
-                "title": "Updated title",
-                "description": "Updated description",
-                "type": "TASK",
-                "category": "210486"
-            }
-
-+ Response 200 (application/hal+json;charset=UTF-8)
-
-    + Headers
-    + Body
-    + Attributes (Goal)
-
-
-
-### Delete a goal [DELETE /positions/{position_id}/periods/{period_id}/goals/{goal_id}]
-
-This DELETE request will delete the goal with the existing request parameter id.
-
-+ Parameters
-    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of a string
-
-+ Request (application/hal+json)
-
-    + Headers
-
-            Accept-Charset: utf-8
-            X-AUTH-TOKEN: {{token}}
-            X-FORWARDED-HOST: local-133.umantis.lan
-
-+ Response 204
-
-
 ### Get all goals from current period [GET /positions/{position_id}/goals]
 
 All Goals from given position are returned through a GET request where the position id is sent as an URL parameter.
@@ -443,7 +537,7 @@ Only goals for period set as CURRENT will be returned.
         + page (Page)
 
 
-### Get all goals from a period [GET /positions/{position_id}/periods/{period_id}/goals]
+### Get all goals from a period [GET]
 
 All Goals from given position and period are returned through a GET request where the position id and period id are sent as an URL parameter.
 
@@ -494,7 +588,8 @@ Invite a peer colleague to create a goal evaluation into the selected goal  .
 + Response 202
 
 
-## Goal Type [/static_data/goals/types]
+
+## Goal Type [/static_data/goals/types/{type_id}]
 
 Every goal has a related goal type.
 Every goal type has a scale of appraisal values.
@@ -514,6 +609,9 @@ Every goal type has a scale of possible categories values.
 
 + Model (application/json)
 
++ Parameters
+    + type_id: objective (required, string) ... ID of the goal type in the form of a string
+
 + Attributes (object)
     + name: objective (string, required)
     + _embedded
@@ -527,12 +625,9 @@ Every goal type has a scale of possible categories values.
 
 
 
-### Get Goal Type [GET /static_data/goals/types/{type_id}]
+### Get Goal Type [GET]
 
 Gets Goal Type with given url parameter id.
-
-+ Parameters
-    + type_id: objective (required, string) ... ID of the goal type in the form of a string
 
 + Request (application/hal+json)
 
@@ -548,6 +643,7 @@ Gets Goal Type with given url parameter id.
 
 
 
+## Goal Types Collection [/static_data/goals/types]
 
 ### List Goal Types [GET]
 
@@ -555,7 +651,7 @@ List a list of goal types appliable to a goal.
 If position or/and period parameters are sent, returned goal type are only appliable for that period and position.
 
 
-+ Request (application/hal+json)
++ Request (application/json)
 
     + Headers
 
@@ -576,10 +672,8 @@ If position or/and period parameters are sent, returned goal type are only appli
 
 
 
-
 ## Goal Evaluation [/positions/{position_id}/goals/{goal_id}/evaluations]
 
-+ evaluator: Evaluator of the evaluation (string)
 + appraisal: Value of the evaluation (string)
 + comment: This is the comment for a goal evaluation (string)
 
@@ -634,7 +728,14 @@ Creation of a Goal Evaluation using a POST request.
     + Attributes (Goal Evaluation)
 
 
-### Get Goal Evaluation [GET /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
+## Goal Evaluations Collection [/positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
+
++ Parameters
+    + position_id (required, number, `132`) ... ID of the position who owns the goal that receives the evaluation
+    + goal_id (required, string, `2825-21000000001525-1750`) ... ID of the goal in the form of string
+    + evaluation_id (required, string, `MAIN-2-2825-21000000001525-1750`) ... ID of the goal evaluation in the form of an string
+
+### Get Goal Evaluation [GET]
 
 Gets evaluation with given url id's.
 
@@ -656,7 +757,7 @@ Gets evaluation with given url id's.
 
 
 
-### Udate Goal Evaluation [PUT /positions/{position_id}/goals/{goal_id}/evaluations/{evaluation_id}]
+### Udate Goal Evaluation [PUT]
 
 This PUT request will modify the existing Goal Evaluation with given url parameter ids.
 
@@ -750,7 +851,7 @@ but if employee, who's details are not accessible to the current user then a lin
 + list: 68 (string, required)
 
 ## Page
-+ offset: 0 (number, required)        
++ offset: 0 (number, required)
 + limit: 10 (number, required)
 + total_count: 0 (number, required)
 
