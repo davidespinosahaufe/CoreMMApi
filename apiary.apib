@@ -132,6 +132,7 @@ Public data set information related to an employee
     + first_name: Walter (string, required)
     + last_name: Turner (string, required)
     + email: walter.turner@fanergy.net (string, required)
+    + position_historized: false (boolean, required)
 
 
 ### GET Employee Public Information [GET]
@@ -237,6 +238,7 @@ Returns list of position who direct reports given position id.
     + first_name: Walter (string, required)
     + last_name: Turner (string, required)
     + email: walter.turner@fanergy.net (string, required)
+    + position_historized: false (boolean, required)
     + _links
         + photograph
             + href: `/blobstore/blob/2014-2-12-1392213948_2164_499?private=true&mac=PXsRP73RrgnknqRpC9JxmZGc4S4dvNQzln5PkBJktnk` (string, required)
@@ -587,6 +589,29 @@ Invite a peer colleague to create a goal evaluation into the selected goal  .
 
 + Response 202
 
+### Invite Multiple Peers to Goals [POST /positions/{position_id}/periods/{period_id}/bulk/invitations]
+
+Invite multiple peers to a set of goals (all peers get invitation for same set of goals)
+
++ Parameters
+    + position_id (required, long, `132`) ... ID of the position of the goals were inviting for
+    + period_id (required, long, `101`) ... ID of goals period were inviting for
+
++ Request (application/json)
+
+    + Headers
+
+            Accept-Charset: utf-8
+            X-FORWARDED-HOST: local-133.umantis.lan
+    + Body
+
+            {
+                "evaluators": [ 1107, 1099 ],
+                "goal_ids": [ "1116-21000000000343-1750", "1117-21000000000343-1750" ]
+            }
+
+
++ Response 202
 
 
 ## Goal Type [/static_data/goals/types/{type_id}]
