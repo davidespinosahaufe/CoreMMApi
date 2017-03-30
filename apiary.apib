@@ -589,7 +589,7 @@ Invite a peer colleague to create a goal evaluation into the selected goal  .
 
 + Response 202
 
-### Invite Multiple Peers to Goals [POST /positions/{position_id}/periods/{period_id}/invitations/bulk]
+### Invite Multiple Peers to Goals [POST /positions/{position_id}/periods/{period_id}/bulk/invitations]
 
 Invite multiple peers to a set of goals (all peers get invitation for same set of goals)
 
@@ -606,7 +606,7 @@ Invite multiple peers to a set of goals (all peers get invitation for same set o
     + Body
 
             {
-                "evaluator_ids": [ 1107, 1099 ],
+                "evaluators": [ 1107, 1099 ],
                 "goal_ids": [ "1116-21000000000343-1750", "1117-21000000000343-1750" ]
             }
 
